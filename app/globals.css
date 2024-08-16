@@ -6,6 +6,7 @@
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
+  --foreground-secondary-rgb: 200, 200, 200;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
@@ -71,6 +72,16 @@
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
+
+  /* Start: Plotly styles */
+  .bglayer rect {
+    fill: rgba(255, 255, 255, 0) !important;
+  }
+
+  .plot-container {
+    filter: invert(75%) hue-rotate(180deg);
+  }
+  /* End: Plotly styles */
 }
 
 * {

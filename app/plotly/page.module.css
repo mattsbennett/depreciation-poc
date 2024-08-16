@@ -1,0 +1,16 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2%;
+  min-height: 100vh;
+}
+
+.main :global .modebar {
+  background-color: transparent !important;
+}
+
+.main :global .modebar-group {
+  background-color: transparent !important;
+}
