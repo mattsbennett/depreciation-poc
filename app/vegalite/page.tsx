@@ -70,13 +70,14 @@ export default function VegaLitePage() {
             Regression and aggregate analysis calculated internally, though it
             doesn&apos;t match manual calculations, seems incorrect. Polynomial
             regression seems broken with react-vega, though it works fine in
-            vega-editor (online).
+            vega-editor (online). Could manually calculate and plot like the
+            others.
           </li>
           <li>Seems less performant than other options considered</li>
           <li>
-            React support exists, but is poorly documented (I haven't figured
-            out how to custom format axis labels, there are no react-specific
-            docs for that), first-class Typescript support
+            React support exists, but is poorly documented (I haven&apos;t
+            figured out how to custom format axis labels, there are no
+            react-specific docs for that), has Typescript support
           </li>
         </ul>
         <h2>Chart Settings</h2>
@@ -133,7 +134,7 @@ export default function VegaLitePage() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Degree to use for polynomial regression (there's a bug
+                      Degree to use for polynomial regression (there&apos;s a bug
                       either in react-vega or my implementation here)
                     </FormDescription>
                     <FormMessage />
