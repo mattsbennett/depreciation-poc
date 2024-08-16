@@ -1,10 +1,48 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2%;
+  padding: 5%;
   min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding: 5% 7%;
+  }
+}
+
+@media (min-width: 1365px) {
+  .main {
+    padding: 5% 10%;
+  }
+}
+
+.main h2,
+.main p {
+  color: rgb(var(--foreground-secondary-rgb));
+}
+
+.main h2 {
+  margin: 2rem 0 0;
+}
+
+.main ul {
+  line-height: 1.5;
+  margin: 1rem 1.5rem 3rem;
+  max-width: 800px;
+}
+
+.main li {
+  margin: 0.5rem 0;
+}
+
+.main a:hover {
+  color: rgb(var(--foreground-rgb));
+}
+
+.main a {
+  color: rgb(var(--foreground-secondary-rgb));
+  text-decoration: underline;
 }
 
 .main :global .modebar {

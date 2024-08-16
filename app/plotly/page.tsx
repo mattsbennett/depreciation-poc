@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 // @ts-ignore
-const Plot = dynamic(() => import('react-plotly.js'), {
-  ssr: false,
+const Plot = dynamic(() => import("react-plotly.js"), {
+  ssr: false
 });
 
-import { range, std } from 'mathjs';
-import { PolynomialRegression } from 'ml-regression-polynomial';
+import { std } from "mathjs";
+import { PolynomialRegression } from "ml-regression-polynomial";
 import styles from "./page.module.css";
+import Header from "../components/Header";
 
 export default function Plotly() {
   const trace1 = {
@@ -108,7 +109,7 @@ export default function Plotly() {
       "2022-08-09T13:39:39.914Z",
       "2023-01-11T06:57:23.004Z",
       "2023-09-23T10:14:24.014Z",
-      "2023-06-01T08:25:00.824Z",
+      "2023-06-01T08:25:00.824Z"
     ],
     y: [
       18470, 16690, 11801, 21724, 13975, 9366, 17613, 20123, 13407, 15607,
@@ -120,13 +121,13 @@ export default function Plotly() {
       26979, 13556, 16847, 15024, 11570, 14733, 20668, 26316, 12186, 9120,
       19503, 15798, 15363, 19068, 16933, 15586, 16535, 28286, 13383, 26592,
       15098, 11611, 25835, 15528, 14470, 19589, 17099, 12704, 15554, 15750,
-      16599, 20130, 16098, 14663, 17453, 11842,
+      16599, 20130, 16098, 14663, 17453, 11842
     ],
     name: 2015,
     type: "scattergl",
-    mode: 'markers',
+    mode: "markers",
     marker: {
-      size: 12
+      size: 10
     }
   };
 
@@ -255,7 +256,7 @@ export default function Plotly() {
       "2021-04-09T00:10:37.390Z",
       "2023-08-27T18:09:46.472Z",
       "2019-06-27T16:13:51.165Z",
-      "2023-03-01T23:53:35.533Z",
+      "2023-03-01T23:53:35.533Z"
     ],
     y: [
       27450, 17429, 27794, 17782, 27767, 17923, 20369, 30872, 27808, 17104,
@@ -270,13 +271,13 @@ export default function Plotly() {
       15790, 14591, 20799, 24686, 17537, 28966, 18345, 9435, 18281, 29224,
       15770, 17092, 15162, 13401, 23742, 12318, 22155, 14176, 16320, 23988,
       23246, 27973, 20105, 26134, 26897, 28322, 29857, 17488, 24016, 15550,
-      24199, 30934, 17445, 30930,
+      24199, 30934, 17445, 30930
     ],
     name: 2016,
     type: "scattergl",
-    mode: 'markers',
+    mode: "markers",
     marker: {
-      size: 12
+      size: 10
     }
   };
 
@@ -406,7 +407,7 @@ export default function Plotly() {
       "2021-01-17T16:38:40.203Z",
       "2023-03-13T16:04:22.495Z",
       "2020-07-31T21:31:47.200Z",
-      "2021-10-04T17:08:07.745Z",
+      "2021-10-04T17:08:07.745Z"
     ],
     y: [
       18509, 22158, 16959, 17729, 25460, 23674, 18719, 17695, 13985, 23025,
@@ -421,13 +422,13 @@ export default function Plotly() {
       17660, 26337, 20473, 9919, 18730, 18305, 16774, 14002, 30048, 15864,
       25059, 20411, 22738, 19876, 19577, 22956, 25018, 15959, 15682, 14818,
       17678, 30699, 28715, 29295, 29378, 15349, 15638, 28771, 26770, 22958,
-      27013, 27208, 16736, 21257, 14620,
+      27013, 27208, 16736, 21257, 14620
     ],
     name: 2017,
     type: "scattergl",
-    mode: 'markers',
+    mode: "markers",
     marker: {
-      size: 12
+      size: 10
     }
   };
 
@@ -627,7 +628,7 @@ export default function Plotly() {
       "2020-12-13T05:14:11.929Z",
       "2023-04-30T11:27:58.179Z",
       "2023-07-04T16:23:15.310Z",
-      "2022-06-19T10:15:02.830Z",
+      "2022-06-19T10:15:02.830Z"
     ],
     y: [
       23601, 19032, 10058, 19252, 17908, 27034, 25719, 26815, 27762, 13303,
@@ -649,13 +650,13 @@ export default function Plotly() {
       14245, 22304, 25821, 18846, 14315, 23327, 26147, 31264, 18432, 22672,
       19829, 25213, 28259, 19871, 29454, 21875, 26579, 18435, 28888, 22775,
       19680, 30976, 29720, 24440, 24828, 21490, 23419, 28293, 16757, 24935,
-      27067, 26713, 30065, 15048, 19420,
+      27067, 26713, 30065, 15048, 19420
     ],
     name: 2018,
     type: "scattergl",
-    mode: 'markers',
+    mode: "markers",
     marker: {
-      size: 12
+      size: 10
     }
   };
 
@@ -867,7 +868,7 @@ export default function Plotly() {
       "2021-08-04T10:13:15.416Z",
       "2023-10-04T06:20:36.312Z",
       "2021-04-26T18:54:11.169Z",
-      "2022-10-04T13:00:41.915Z",
+      "2022-10-04T13:00:41.915Z"
     ],
     y: [
       13423, 24361, 21252, 22839, 23925, 27932, 24103, 29987, 26455, 29118,
@@ -890,13 +891,13 @@ export default function Plotly() {
       18230, 19394, 24413, 18777, 29676, 20978, 28743, 19492, 25669, 24593,
       28724, 20897, 16781, 20175, 29483, 22795, 20612, 25871, 32333, 22401,
       19756, 24893, 20435, 30854, 15119, 26020, 29071, 23554, 21105, 19428,
-      18369, 23701, 27869, 32248, 21017, 26490, 18562,
+      18369, 23701, 27869, 32248, 21017, 26490, 18562
     ],
     name: 2019,
     type: "scattergl",
-    mode: 'markers',
+    mode: "markers",
     marker: {
-      size: 12
+      size: 10
     }
   };
 
@@ -1154,7 +1155,7 @@ export default function Plotly() {
       "2021-11-13T10:29:37.830Z",
       "2023-06-01T09:20:09.375Z",
       "2020-12-31T18:57:37.281Z",
-      "2019-08-12T18:22:35.209Z",
+      "2019-08-12T18:22:35.209Z"
     ],
     y: [
       21634, 30060, 20500, 16658, 19469, 21486, 19039, 29762, 21451, 24648,
@@ -1182,35 +1183,50 @@ export default function Plotly() {
       19892, 23843, 27610, 22262, 26463, 22339, 21262, 29120, 20377, 23380,
       25888, 19804, 28654, 22067, 29991, 19462, 18838, 22204, 22639, 17880,
       25556, 14480, 25351, 25598, 22448, 23936, 25870, 31119, 26577, 32057,
-      25678, 18255, 20093,
+      25678, 18255, 20093
     ],
     name: 2020,
     type: "scattergl",
-    mode: 'markers',
+    mode: "markers",
     marker: {
-      size: 12
+      size: 10
     }
   };
 
   // Assuming you have your data in arrays
-  const dates = trace1.x.concat(trace2.x, trace3.x, trace4.x, trace5.x, trace6.x); // Your date data
-  const prices = trace1.y.concat(trace2.y, trace3.y, trace4.y, trace5.y, trace6.y); // Your price data
+  const dates = trace1.x.concat(
+    trace2.x,
+    trace3.x,
+    trace4.x,
+    trace5.x,
+    trace6.x
+  ); // Your date data
+  const prices = trace1.y.concat(
+    trace2.y,
+    trace3.y,
+    trace4.y,
+    trace5.y,
+    trace6.y
+  ); // Your price data
 
   // Sort the dates and prices together
   const combined = dates.map((date, index) => ({ date, price: prices[index] }));
-  combined.sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf());
+  combined.sort(
+    (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
+  );
 
   const sortedDates = combined.map(item => item.date);
   const sortedPrices = combined.map(item => item.price);
 
   // Calculate the mean of all the y data
-  const meanPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+  const meanPrice =
+    prices.reduce((sum, price) => sum + price, 0) / prices.length;
 
   // Create an array for the mean line
   const meanPrices = Array(dates.length).fill(meanPrice);
 
   // Calculate the error (example with dummy data)
-  const error = std(sortedPrices, 'biased'); // Example: 10% error
+  const error = std(sortedPrices, "biased"); // Example: 10% error
 
   const upperBound = meanPrices.map(mean => mean + error);
   //@ts-ignore
@@ -1231,20 +1247,20 @@ export default function Plotly() {
 
   for (let x = minX; x <= maxX; x += step) {
     const y = regression.predict(x);
-    polynomialX.push(new Date(x).toISOString().split('T')[0]);
+    polynomialX.push(new Date(x).toISOString().split("T")[0]);
     polynomialY.push(y);
   }
 
   const meanTrace = {
     x: dates,
     y: meanPrices,
-    mode: 'lines',
-    name: 'Mean Price',
-    legendgroup: 'Mean Price (± stddev)',
+    mode: "lines",
+    name: "Mean Price",
+    legendgroup: "Mean Price (± stddev)",
     showlegend: false,
-    hoverinfo: 'skip',
+    hoverinfo: "skip",
     line: {
-      color: 'rgb(0, 130, 255)',
+      color: "rgb(0, 130, 255)",
       width: 2
     }
   };
@@ -1252,47 +1268,50 @@ export default function Plotly() {
   const errorBand = {
     x: [...sortedDates, ...sortedDates.slice().reverse()],
     y: [...upperBound, ...lowerBound.slice().reverse()],
-    fill: 'toself',
-    fillcolor: 'rgba(0, 130, 255,0.25)',
-    hoverinfo: 'skip',
+    fill: "toself",
+    fillcolor: "rgba(0, 130, 255,0.4)",
+    hoverinfo: "skip",
     line: {
-      color: 'transparent'
+      color: "transparent"
     },
-    name: 'Mean Price (± stddev)',
-    legendgroup: 'Mean Price (± stddev)',
+    name: "Mean Price (± stddev)",
+    legendgroup: "Mean Price (± stddev)"
   };
 
   // Polynomial regression trace
   const polynomialRegression = {
     x: polynomialX,
     y: polynomialY,
-    mode: 'lines',
-    name: 'Polynomial Regression',
-    hoverinfo: 'skip',
+    mode: "lines",
+    name: "Polynomial Regression",
+    hoverinfo: "skip",
     line: {
-      color: 'red',
+      color: "red",
       width: 4
     }
   };
 
   const layout = {
-    paper_bgcolor: 'rgba(255,255,255, 0)',
+    margin: {
+      t: 100,
+      r: 50,
+      b: 100,
+      l: 50
+    },
+    paper_bgcolor: "rgba(255,255,255, 0)",
     title: "Audi Q7 Prices",
     xaxis: {
       title: "Date",
-      type: "date",
+      type: "date"
     },
     yaxis: {
       fixedrange: true,
       title: "Price",
-      rangemode: 'nonnegative',
+      rangemode: "nonnegative",
       autorange: true
     },
     legend: {
-      x: 0,
-      y: -0.2,
-      yanchor: "bottom",
-      orientation: "h",
+      orientation: "h"
     }
   };
 
@@ -1300,18 +1319,60 @@ export default function Plotly() {
     displaylogo: false,
     displayModeBar: true,
     scrollZoom: true,
-    responsive: true,
+    responsive: true
   };
 
   return (
-    <main className={styles.main}>
-      <Plot
-        // @ts-ignore
-        config={config}
-        data={[trace1, trace2, trace3, trace4, trace5, trace6, meanTrace, errorBand, polynomialRegression]}
-        layout={layout}
-        style={{width: "100%", height: "70vh"}}
-      />
-    </main>
+    <>
+      <Header />
+      <main className={styles.main}>
+        <h1>Plotly.js Example</h1>
+        <h2>Notes</h2>
+        <ul>
+          <li>
+            Interactions are extensive out-of-the-box (handy click/double-click
+            actions on legend, though double-click is not entirely intuitive),
+            though more complicated (uses a toolbar, most of which we could
+            hide)
+          </li>
+          <li>
+            No multi-touch support; zoom uses brush pattern instead of pinch,
+            which works fine; wheel zoom is generally the smoothest of options
+            evaluated. Kind of annoying that native pan/zoom doesn&apos;t work
+            for trackpads/mobile (must toggle pan/zoom using toolbar).
+          </li>
+          <li>
+            Helper tooltips show on chart actions (hover, click, etc.), though
+            seemingly not themeable
+          </li>
+          <li>
+            Performance is best of options evaluated, includes webgl rendering
+            option
+          </li>
+          <li>
+            Aggregate and regression statistics must be calculated manually and
+            reduced to a set of x/y values which are then plotted
+          </li>
+          <li>React support, Typescript support is an afterthought</li>
+        </ul>
+        <Plot
+          // @ts-ignore
+          config={config}
+          data={[
+            trace1,
+            trace2,
+            trace3,
+            trace4,
+            trace5,
+            trace6,
+            meanTrace,
+            errorBand,
+            polynomialRegression
+          ]}
+          layout={layout}
+          style={{ width: "100%", height: "800px" }}
+        />
+      </main>
+    </>
   );
 }

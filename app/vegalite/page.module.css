@@ -1,18 +1,35 @@
 .main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 2%;
+  padding: 5%;
   min-height: 100vh;
 }
 
-.main h3 {
-  margin: 3rem 0 1rem;
+@media (min-width: 768px) {
+  .main {
+    padding: 5% 7%;
+  }
+}
+
+@media (min-width: 1365px) {
+  .main {
+    padding: 5% 10%;
+  }
+}
+
+.main h2,
+.main p {
+  color: rgb(var(--foreground-secondary-rgb));
+}
+
+.main h2 {
+  margin: 2rem 0 0;
 }
 
 .main ul {
   line-height: 1.5;
-  margin: 1rem 5%;
+  margin: 1rem 1.5rem 3rem;
+  max-width: 800px;
 }
 
 .main li {
@@ -30,4 +47,8 @@
 
 .main :global(.vega-embed details) {
   display: none;
+}
+
+.main :global(.vega-embed.has-actions) {
+  padding: 0 !important;
 }

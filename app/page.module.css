@@ -6,19 +6,38 @@
   min-height: 100vh;
 }
 
+@media (min-width: 768px) {
+  .main {
+    padding: 5%;
+  }
+}
+
+@media (min-width: 1365px) {
+  .main {
+    padding: 5% 10%;
+  }
+}
+
 .main p {
   color: rgb(var(--foreground-secondary-rgb));
   margin-bottom: 2rem;
   text-align: center;
+  line-height: 1.4;
 }
 
 .main ul {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
   list-style: none;
   text-align: center;
 }
 
 .main li {
-  margin-bottom: 1rem;
+  display: flex;
+  margin-bottom: 1.5rem;
 }
 
 .main h1 {
@@ -28,8 +47,20 @@
 }
 
 .main a {
+  display: flex;
   font-size: 1.25rem;
+  padding: 1rem 1.5rem;
 }
+
+.main a svg {
+  margin-left: 0.25rem;
+  transition: transform 0.2s;
+}
+
 .main a:hover {
   text-decoration: underline;
+}
+
+.main a:hover svg {
+  transform: translateX(0.25rem);
 }

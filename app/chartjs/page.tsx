@@ -4,15 +4,15 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import "chartjs-adapter-date-fns";
 
-const Chart = dynamic(
-  () => import("react-chartjs-2").then(mod => mod.Chart),
-  { ssr: false }
-);
+const Chart = dynamic(() => import("react-chartjs-2").then(mod => mod.Chart), {
+  ssr: false
+});
 
 import { std } from "mathjs";
 import { PolynomialRegression } from "ml-regression-polynomial";
 import { Chart as ChartJS, registerables } from "chart.js";
 import styles from "./page.module.css";
+import Header from "../components/Header";
 
 ChartJS.register(...registerables);
 
@@ -404,7 +404,9 @@ const datasets = [
         y: 11410
       }
     ],
-    label: "2015"
+    label: "2015",
+    pointRadius: 5,
+    pointHoverRadius: 5
   },
   {
     data: [
@@ -869,7 +871,9 @@ const datasets = [
         y: 18151
       }
     ],
-    label: "2016"
+    label: "2016",
+    pointRadius: 5,
+    pointHoverRadius: 5
   },
   {
     data: [
@@ -1450,7 +1454,9 @@ const datasets = [
         y: 23658
       }
     ],
-    label: "2017"
+    label: "2017",
+    pointRadius: 5,
+    pointHoverRadius: 5
   },
   {
     data: [
@@ -2179,7 +2185,9 @@ const datasets = [
         y: 16339
       }
     ],
-    label: "2018"
+    label: "2018",
+    pointRadius: 5,
+    pointHoverRadius: 5
   },
   {
     data: [
@@ -3052,7 +3060,9 @@ const datasets = [
         y: 17663
       }
     ],
-    label: "2019"
+    label: "2019",
+    pointRadius: 5,
+    pointHoverRadius: 5
   },
   {
     data: [
@@ -4045,7 +4055,9 @@ const datasets = [
         y: 21451
       }
     ],
-    label: "2020"
+    label: "2020",
+    pointRadius: 5,
+    pointHoverRadius: 5
   }
 ];
 
@@ -4073,18 +4085,13 @@ const sortedDates = combined.map(item => item.date);
 const sortedPrices = combined.map(item => item.price);
 
 // Calculate the mean of all the y data
-const meanPrice =
-  prices.reduce((sum, price) => sum + price, 0) / prices.length;
+const meanPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
 
 // Calculate the error (example with dummy data)
 const error = std(sortedPrices, "biased"); // Example: 10% error
 
-  // Create an array for the mean line
-  const meanPrices = Array(dates.length).fill(meanPrice);
-
-const upperBound = meanPrices.map(mean => mean + error);
-//@ts-ignore
-const lowerBound = meanPrices.map(mean => mean - error);
+// Create an array for the mean line
+const meanPrices = Array(dates.length).fill(meanPrice);
 
 // Convert date strings to numerical values for regression
 const xNumerical = sortedDates.map(date => new Date(date).getTime());
@@ -4093,8 +4100,6 @@ const xNumerical = sortedDates.map(date => new Date(date).getTime());
 const regression = new PolynomialRegression(xNumerical, sortedPrices, 4);
 
 // Generate polynomial curve
-const polynomialX = [];
-const polynomialY = [];
 const minX = Math.min(...xNumerical);
 const maxX = Math.max(...xNumerical);
 const step = (maxX - minX) / 100;
@@ -4105,27 +4110,36 @@ const lowerBoundPoints = [];
 
 for (let x = minX; x <= maxX; x += step) {
   meanPoints.push({ x: new Date(x).toISOString().split("T")[0], y: meanPrice });
-  //@ts-ignore
-  upperBoundPoints.push({ x: new Date(x).toISOString().split("T")[0], y: meanPrice + error });
-  //@ts-ignore
-  lowerBoundPoints.push({ x: new Date(x).toISOString().split("T")[0], y: meanPrice - error });
-  polynomialPoints.push({ x: new Date(x).toISOString().split("T")[0], y: regression.predict(x) });
+  upperBoundPoints.push({
+    x: new Date(x).toISOString().split("T")[0],
+    //@ts-ignore
+    y: meanPrice + error
+  });
+  lowerBoundPoints.push({
+    x: new Date(x).toISOString().split("T")[0],
+    //@ts-ignore
+    y: meanPrice - error
+  });
+  polynomialPoints.push({
+    x: new Date(x).toISOString().split("T")[0],
+    y: regression.predict(x)
+  });
 }
 
 datasets.push({
   data: polynomialPoints,
   label: "Polynomial Regression",
-  //@ts-ignore
   pointRadius: 0,
-  type: "line",
+  //@ts-ignore
+  type: "line"
 });
 
 datasets.push({
   data: meanPoints,
   label: "Mean",
-  //@ts-ignore
   pointRadius: 0,
-  type: "line",
+  //@ts-ignore
+  type: "line"
 });
 
 datasets.push({
@@ -4135,7 +4149,7 @@ datasets.push({
   label: "",
   pointRadius: 0,
   type: "line",
-  fill: false,
+  fill: false
 });
 
 datasets.push({
@@ -4147,7 +4161,7 @@ datasets.push({
   label: "Std Dev",
   pointRadius: 0,
   type: "line",
-  fill: "-1",
+  fill: "-1"
 });
 
 export default function ChartJsExample() {
@@ -4162,72 +4176,94 @@ export default function ChartJsExample() {
   }, []);
 
   return (
-    <main className={styles.main}>
-      <Chart
-        type="scatter"
-        data={{
-          labels: ["Date", "Price"],
-          datasets
-        }}
-        options={{
-          plugins: {
-            legend: {
-              display: true,
-              labels: {
-                filter: function (legendItem, chartData) {
-                    //@ts-ignore
-                    return (chartData.datasets[legendItem.datasetIndex].label)
+    <>
+      <Header />
+      <main className={styles.main}>
+        <h1>Chart.js Example</h1>
+        <h2>Notes</h2>
+        <ul>
+          <li>
+            Once a specific color is set on one dataset, all datasets must have
+            colors manually set (hence why mean and stddev don&apos;t match
+            here, didn&apos;t bother optimizing colors)
+          </li>
+          <li>
+            Pinch zoom/multi-touch on mobile are best of tested solutions;
+            though with trackpads/touch, zoom often doesn&apos;t work until
+            after a pan, and is overly sensitive
+          </li>
+          <li>
+            Interactions are limited out-of-the-box, but mostly sufficient for
+            our use-case
+          </li>
+          <li>
+            Aggregate and regression statistics must be calculated manually and
+            reduced to a set of x/y values which are then plotted
+          </li>
+          <li>
+            React support exists, but seems possibly abandoned, Typescript
+            support is a bit rough
+          </li>
+        </ul>
+        <div className={styles.chartWrap}>
+          <Chart
+            type="scatter"
+            data={{
+              labels: ["Date", "Price"],
+              datasets
+            }}
+            options={{
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  labels: {
+                    filter: function (legendItem, chartData) {
+                      //@ts-ignore
+                      return chartData.datasets[legendItem.datasetIndex].label;
+                    }
+                  }
                 },
-            }
-            },
-            title: {
-              display: true,
-              text: "Audi Q7 Prices"
-            },
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: "x"
-                // speed: 10
+                title: {
+                  display: true,
+                  text: "Audi Q7 Prices"
+                },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: "x"
+                  },
+                  zoom: {
+                    wheel: {
+                      enabled: true
+                    },
+                    pinch: {
+                      enabled: true
+                    },
+                    mode: "x"
+                  }
+                }
               },
-              zoom: {
-                wheel: {
-                  enabled: true
+              scales: {
+                x: {
+                  type: "time",
+                  min: "2019-01-01",
+                  max: "2023-12-31"
                 },
-                pinch: {
-                  enabled: true
-                },
-                mode: "x"
-                // speed: 0.1
-              }
-            }
-          },
-          scales: {
-            x: {
-              type: "time",
-              min: "2019-01-01",
-              max: "2023-12-31"
-            },
-            y: {
-              ticks: {
-                // Include a dollar sign in the ticks
-                callback: function (value, index, ticks) {
-                  //@ts-ignore
-                  return `$${value / 1000}k`;
+                y: {
+                  ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function (value, index, ticks) {
+                      //@ts-ignore
+                      return `$${value / 1000}k`;
+                    }
+                  }
                 }
               }
-            }
-          }
-        }}
-      />
-              <h3>Notes</h3>
-        <ul>
-          <li>{"Doesn't seem to be a way to constrain zoom to min/max ranges"}</li>
-          <li>Pinch zoom/multi-touch on mobile <a href='https://vega.github.io/vega/examples/zoomable-scatter-plot/'>is barely functional</a> (didn&apos;t bother to implement here as it&apos;s so bad)</li>
-          <li>Legend/labels not interactive out-of-the-box, requires custom event-based implementation</li>
-          <li>Regression and aggregate analysis automatically calculated internally, though it doesn&apos;t match manual calculations</li>
-          <li>Least performant of the options considered (zoom/pan performance degrades significantly around 1000 points)</li>
-        </ul>
-    </main>
+            }}
+          />
+        </div>
+      </main>
+    </>
   );
 }

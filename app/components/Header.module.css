@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 5%;
+  border-bottom: 1px solid rgba(var(--foreground-rgb), 0.2);
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 1.5rem 7%;
+  }
+}
+
+@media (min-width: 1365px) {
+  .header {
+    padding: 1.5rem 10%;
+  }
+}
+
+.header a {
+    color: rgba(var(--foreground-secondary-rgb), 0.7);;
+}
+
+.header a:hover {
+    color: rgb(var(--foreground-rgb));
+}
+
+.pages {
+  display: flex;
+  gap: 1rem;
+}
+
+header a.active {
+    color: rgb(var(--foreground-rgb));
+}

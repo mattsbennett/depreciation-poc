@@ -6,13 +6,14 @@ export default createClassFromSpec({
   mode: "vega-lite",
   spec: {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    "background": "transparent",
     title: "Audi Q7 Prices",
     config: { customFormatTypes: true, scale: { round: false } },
     description:
       "Plot of car prices over time with polynomial regression and mean +/- 1 stdev overlaid.",
     // "container" should make it responsive (https://vega.github.io/vega-lite/examples/bar_size_responsive.html), but doesn't seem to work
-    width: 800,
-    height: 600,
+    width: "container",
+    height: 500,
     data: {
       name: "table",
       values: [
@@ -5024,7 +5025,7 @@ export default createClassFromSpec({
           {
             op: "average",
             field: "price",
-            as: "mean_price"
+            as: "Mean Price (+- stddev)"
           }
         ],
         frame: [-30, 30]
@@ -5062,6 +5063,10 @@ export default createClassFromSpec({
             field: "modelYear",
             type: "nominal",
             title: "Model Year"
+          },
+          opacity: {
+            condition: {param: "modelYear", value: 1},
+            value: 0.2
           }
         },
         params: [
@@ -5069,13 +5074,19 @@ export default createClassFromSpec({
             name: "grid",
             select: "interval",
             bind: "scales"
+          },
+          {
+            name: "modelYear",
+            select: {"type": "point", "fields": ["modelYear"]},
+            bind: "legend"
           }
         ]
       },
       {
+        name: "Polynomial Regression",
         mark: {
           type: "line",
-          strokeWidth: 5
+          strokeWidth: 4
         },
         transform: [
           {
@@ -5093,6 +5104,9 @@ export default createClassFromSpec({
           y: {
             field: "price",
             type: "quantitative"
+          },
+          color: {
+            datum: "Polynomial Regression",
           }
         }
       },
@@ -5108,30 +5122,40 @@ export default createClassFromSpec({
     //         axis: { title: "Date" }
     //       },
     //       y: {
-    //         field: "mean_price",
+    //         field: "Mean Price (+- stddev)",
     //         type: "quantitative",
     //         scale: { domain: [10000, 26000] },
-    //         axis: { title: "Mean Price" }
+    //         axis: { title: "Mean Price (+- stddev)" }
     //       }
     //     }
     //   },
       {
-        mark: { type: "errorband", extent: "stdev", opacity: 0.2 },
+        mark: { type: "errorband", extent: "stdev", opacity: 0.4 },
         encoding: {
           y: {
-            field: "mean_price",
+            field: "Mean Price (+- stddev)",
             type: "quantitative",
             title: "Price"
+          },
+          tooltip: null,
+          color: {
+            datum: "Mean Price (+- stddev)",
           }
         }
       },
       {
-        mark: "rule",
+        mark: {
+          type: "rule",
+          strokeWidth: 2
+        },
         encoding: {
           y: {
-            field: "mean_price",
+            field: "Mean Price (+- stddev)",
             type: "quantitative",
             aggregate: "mean"
+          },
+          color: {
+            datum: "Mean Price (+- stddev)",
           }
         }
       }

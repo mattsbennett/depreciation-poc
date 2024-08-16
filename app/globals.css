@@ -6,7 +6,7 @@
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
-  --foreground-secondary-rgb: 200, 200, 200;
+  --foreground-secondary-rgb: 76, 76, 76;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
@@ -44,6 +44,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
+    --foreground-secondary-rgb: 200, 200, 200;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
 
@@ -73,15 +74,16 @@
     --card-border-rgb: 200, 200, 200;
   }
 
-  /* Start: Plotly styles */
+  /* Start: Plotly, Vega-Lite styles */
   .bglayer rect {
     fill: rgba(255, 255, 255, 0) !important;
   }
 
-  .plot-container {
+  .plot-container,
+  .vega-embed {
     filter: invert(75%) hue-rotate(180deg);
   }
-  /* End: Plotly styles */
+  /* End: Plotly, Vega-Lite styles */
 }
 
 * {
@@ -109,6 +111,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.bglayer rect {
+  fill: rgba(255, 255, 255, 0) !important;
 }
 
 @media (prefers-color-scheme: dark) {
