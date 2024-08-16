@@ -1,0 +1,54 @@
+.slider {
+  position: relative;
+  display: flex;
+  width: 100%;
+  touch-action: none;
+  user-select: none;
+  align-items: center;
+}
+
+.track {
+  position: relative;
+  height: 0.5rem;
+  width: 100%;
+  flex-grow: 1;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: rgb(var(--card-rgb));
+  margin: 1rem 0;
+}
+
+.range {
+  position: absolute;
+  height: 100%;
+  background-color: rgb(var(--foreground-rgb));
+}
+
+.thumb {
+  display: block;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid rgb(var(--foreground-rgb));
+  background-color: rgb(var(--background-start-rgb));
+  transition-property: color;
+  outline: none;
+  pointer-events: none;
+}
+
+.marks {
+  margin-top: 0.375rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.mark {
+  font-size: 0.875rem;
+  font-weight: 300;
+}
+
+.markInactive {
+  font-size: 10px;
+  opacity: 0.4;
+}

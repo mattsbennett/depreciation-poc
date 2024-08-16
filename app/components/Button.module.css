@@ -1,0 +1,91 @@
+.common {
+    cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-origin: border-box;
+  outline: none;
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+}
+
+.common:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(var(--foreground--secondary--rgb));
+}
+
+.common:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.default {
+  background-color: rgb(var(--foreground--secondary--rgb));
+  color: rgb(var(--foreground-rgb));
+}
+
+.default:hover {
+    background-color: rgba(var(--foreground--secondary--rgb), 0.9);
+}
+
+.outline {
+  border: 1px solid rgb(var(--foreground--secondary--rgb));
+  background-color: rgb(var(--card-rgb));
+}
+
+.outline:hover {
+  background-color: rgb(var(--foreground--secondary--rgb));
+  color: rgb(var(--foreground-rgb));
+}
+
+.secondary {
+  background-color: rgb(var(--card-rgb));
+  color: rgb(var(--foreground-rgb));
+}
+
+.secondary:hover {
+    background-color: rgba(var(--card-rgb), 0.9);
+}
+
+.ghost:hover {
+    background-color: rgb(var(--foreground--secondary--rgb));
+    color: rgb(var(--foreground-rgb));
+}
+
+.link {
+  color: rgb(var(--foreground-rgb));
+  text-underline-offset: 4px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.sizeDefault {
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.sizeSmall {
+  height: 2.25rem;
+  border-radius: 0.375rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.sizeLarge {
+  height: 2.75rem;
+  border-radius: 0.375rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.sizeIcon {
+  height: 2.5rem;
+  width: 2.5rem;
+}

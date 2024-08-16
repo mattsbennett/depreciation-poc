@@ -1,0 +1,36 @@
+.tooltip {
+  z-index: 50;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  border: 1px solid;
+  background-color: rgb(var(--card-rgb));
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  color: rgb(var(--card-foreground-rgb));
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation:
+    fade-in-0 0.2s ease-in-out,
+    zoom-in-95 0.2s ease-in-out;
+}
+
+.tooltip[data-state="closed"] {
+  animation:
+    fade-out-0 0.2s ease-in-out,
+    zoom-out-95 0.2s ease-in-out;
+}
+
+.tooltip[data-side="bottom"] {
+  animation: slide-in-from-top-2 0.2s ease-in-out;
+}
+
+.tooltip[data-side="left"] {
+  animation: slide-in-from-right-2 0.2s ease-in-out;
+}
+
+.tooltip[data-side="right"] {
+  animation: slide-in-from-left-2 0.2s ease-in-out;
+}
+
+.tooltip[data-side="top"] {
+  animation: slide-in-from-bottom-2 0.2s ease-in-out;
+}

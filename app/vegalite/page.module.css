@@ -1,7 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  padding: 5%;
+  padding: 7%;
   min-height: 100vh;
 }
 
@@ -13,7 +13,7 @@
 
 @media (min-width: 1365px) {
   .main {
-    padding: 5% 10%;
+    padding: 3% 10%;
   }
 }
 
@@ -43,6 +43,18 @@
 .main a {
   color: rgb(var(--foreground-secondary-rgb));
   text-decoration: underline;
+}
+
+.formWrap {
+  margin-top: 1.5rem;
+}
+
+.chartWrap {
+  margin-top: 1.5rem;
+}
+
+.main :global(.vega-embed) {
+  width: 100%;
 }
 
 .main :global(.vega-embed details) {
