@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { ChartJsDataset, getChartJsData } from "../mockDataGenerator";
+import { NivoDataset, getNivoData } from "../mockDataGenerator";
 import Header from "../components/Header";
 import { Button } from "../components/Button";
 import { Slider } from "../components/Slider";
@@ -18,12 +18,13 @@ import {
   FormLabel,
   FormMessage
 } from "../components/Form";
-import ChartJsExample from "../components/ChartJsExample";
+import NivoExample from "../components/NivoExample";
 import { chartFormSchema } from "../utils/chartFormUtils";
 import styles from "./page.module.css";
+import clsx from "clsx";
 
 export default function ChartJsPage() {
-  const [datasets, setDatasets] = useState<ChartJsDataset[]>(getChartJsData());
+  const [datasets, setDatasets] = useState<NivoDataset[]>(getNivoData());
   const form = useForm<z.infer<typeof chartFormSchema>>({
     resolver: zodResolver(chartFormSchema),
     defaultValues: {
@@ -33,37 +34,21 @@ export default function ChartJsPage() {
   });
 
   function onSubmit(values: z.infer<typeof chartFormSchema>) {
-    setDatasets(getChartJsData(values.recordCount, values.polyDegree));
+    setDatasets(getNivoData(values.recordCount, values.polyDegree));
   }
 
   return (
     <>
       <Header />
       <main className={styles.main}>
-        <h1>Chart.js Example</h1>
+        <h1>Nivo Example</h1>
         <h2>Notes</h2>
         <ul>
           <li>
-            Once a specific color is set on one dataset, all datasets must have
-            colors manually set (hence why mean and stddev don&apos;t match
-            here, didn&apos;t bother optimizing colors)
+            Zoom/pan must be implemented manually
           </li>
           <li>
-            Pinch zoom/multi-touch on mobile are best of tested solutions. With
-            trackpads/touch, zoom sometimes doesn&apos;t work until after a pan,
-            and isn't as smooth as Plotly.
-          </li>
-          <li>
-            Interactions are limited out-of-the-box, but mostly sufficient for
-            our use-case
-          </li>
-          <li>
-            Aggregate and regression statistics must be calculated manually and
-            reduced to a set of x/y values which are then plotted
-          </li>
-          <li>
-            React support exists, but seems possibly abandoned, Typescript
-            support is a bit rough
+            Composable charts/layers are complicated to implement
           </li>
         </ul>
         <h2>Chart Settings</h2>
@@ -80,12 +65,8 @@ export default function ChartJsPage() {
                     </FormLabel>
                     <FormControl>
                       <Slider
-                        min={
-                          chartFormSchema.shape.recordCount.minValue as number
-                        }
-                        max={
-                          chartFormSchema.shape.recordCount.maxValue as number
-                        }
+                        min={chartFormSchema.shape.recordCount.minValue as number}
+                        max={chartFormSchema.shape.recordCount.maxValue as number}
                         step={100}
                         defaultValue={[1000]}
                         onChange={onChange}
@@ -108,12 +89,8 @@ export default function ChartJsPage() {
                     </FormLabel>
                     <FormControl>
                       <Slider
-                        min={
-                          chartFormSchema.shape.polyDegree.minValue as number
-                        }
-                        max={
-                          chartFormSchema.shape.polyDegree.maxValue as number
-                        }
+                        min={chartFormSchema.shape.polyDegree.minValue as number}
+                        max={chartFormSchema.shape.polyDegree.maxValue as number}
                         step={1}
                         defaultValue={[3]}
                         onChange={onChange}
@@ -126,12 +103,12 @@ export default function ChartJsPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant="outline">Apply</Button>
+              <Button type="submit">Apply</Button>
             </form>
           </Form>
         </div>
-        <div className={styles.chartWrap}>
-          <ChartJsExample datasets={datasets} />
+        <div className={clsx(styles.chartWrap, styles.nivoChart)}>
+          <NivoExample dataset={datasets} />
         </div>
       </main>
     </>

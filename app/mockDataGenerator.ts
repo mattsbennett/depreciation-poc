@@ -42,6 +42,11 @@ function getRandomModelYear(min: number, max:number, price: number, targetAvgPri
   return modelYear;
 }
 
+export interface NivoDataset {
+  id: string;
+  data: { x: Date; y: number }[];
+}
+
 export interface ChartJsDataset {
   label: string;
   data: { x: Date; y: number }[];
@@ -342,6 +347,127 @@ export function getChartJsData(
     type: "line",
     fill: "-1"
   });
+
+  return Array.from(datasets.values());
+}
+
+export function getNivoData(
+  numRecords = 1000,
+  polyDegree = 3,
+  priceSkew = 0.7,
+  minModelYear = 2016,
+  maxModelYear = 2020,
+  targetAvgPrice = 18000,
+  minDate = new Date("2020-01-01"),
+  maxDate = new Date("2024-01-01"),
+): NivoDataset[] {
+  const datasets = new Map();
+  const dates = Array<Date>();
+  const prices = Array<number>();
+
+  for (let i = minModelYear; i <= maxModelYear; i++) {
+    datasets.set(i, {
+      data: [],
+      id: i,
+    });
+  }
+
+  for (let i = 0; i < numRecords; i++) {
+    const date = getRandomDate(minDate, maxDate);
+    const price = getRandomPrice(date, targetAvgPrice, priceSkew);
+    const modelYear = getRandomModelYear(minModelYear, maxModelYear, price, targetAvgPrice);
+
+    datasets.get(modelYear).data.push({ x: date, y: price });
+    dates.push(date);
+    prices.push(price);
+  }
+
+  // Sort the dates and prices together
+  const combined = dates.map((date, index) => ({
+    date,
+    price: prices[index]
+  }));
+  combined.sort(
+    (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
+  );
+
+  const sortedDates = combined.map(item => item.date);
+  const sortedPrices = combined.map(item => item.price);
+
+  // Calculate the mean of all the y data
+  const meanPrice =
+    prices.reduce((sum, price) => sum + price, 0) / prices.length;
+
+  // Calculate the error (example with dummy data)
+  const error = parseInt(std(sortedPrices, "biased").toString(), 10); // Example: 10% error
+
+  // Convert date strings to numerical values for regression
+  const xNumerical = sortedDates.map(date => new Date(date).getTime());
+
+  // Perform polynomial regression
+  const regression = new PolynomialRegression(xNumerical, sortedPrices, polyDegree);
+
+  // Generate polynomial curve
+  const minX = Math.min(...xNumerical);
+  const maxX = Math.max(...xNumerical);
+  const step = (maxX - minX) / 100;
+  const polynomialPoints = [];
+  const meanPoints = [];
+  const upperBoundPoints = [];
+  const lowerBoundPoints = [];
+
+  for (let x = minX; x <= maxX; x += step) {
+    meanPoints.push({
+      x: new Date(x).toISOString().split("T")[0],
+      y: meanPrice
+    });
+    upperBoundPoints.push({
+      x: new Date(x).toISOString().split("T")[0],
+      y: meanPrice + error
+    });
+    lowerBoundPoints.push({
+      x: new Date(x).toISOString().split("T")[0],
+      y: meanPrice - error
+    });
+    polynomialPoints.push({
+      x: new Date(x).toISOString().split("T")[0],
+      y: regression.predict(x)
+    });
+  }
+
+  // datasets.set("poly", {
+  //   data: polynomialPoints,
+  //   label: "Polynomial Regression",
+  //   pointRadius: 0,
+  //   type: "line"
+  // });
+
+  // datasets.set("mean", {
+  //   data: meanPoints,
+  //   label: "Mean",
+  //   pointRadius: 0,
+  //   type: "line"
+  // });
+
+  // datasets.set("upper", {
+  //   borderWidth: 0,
+  //   data: upperBoundPoints,
+  //   label: "",
+  //   pointRadius: 0,
+  //   type: "line",
+  //   fill: false
+  // });
+
+  // datasets.set("lower", {
+  //   // Once you set a backgroundColor on one dataset, you have to manually set it on all datasets
+  //   // backgroundColor: "rgba(54, 151, 227, 0.3)",
+  //   borderWidth: 0,
+  //   data: lowerBoundPoints,
+  //   label: "Std Dev",
+  //   pointRadius: 0,
+  //   type: "line",
+  //   fill: "-1"
+  // });
 
   return Array.from(datasets.values());
 }

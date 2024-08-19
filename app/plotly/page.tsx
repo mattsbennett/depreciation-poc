@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { z } from "zod";
@@ -51,13 +51,15 @@ export default function PlotlyPage() {
           </li>
           <li>
             No multi-touch support; zoom uses brush pattern instead of pinch,
-            which works fine; wheel zoom is generally the smoothest of options
+            which works well; wheel zoom is generally the smoothest of options
             evaluated. Kind of annoying that native pan/zoom doesn&apos;t work
-            for trackpads/mobile (must toggle pan/zoom using toolbar).
+            for trackpads/mobile (must toggle pan/zoom using toolbar), but none
+            of the tested libraries provide usable pinch, and at least this
+            approach works flawlessly, if not less intuitively.
           </li>
           <li>
-            Helper tooltips show on chart actions (hover, click, etc.), though
-            seemingly not themeable
+            Helper tooltips show on chart actions (hover, click, etc.), will
+            need to investigate theme customization for them.
           </li>
           <li>
             Performance is best of options evaluated, includes webgl rendering
@@ -67,7 +69,12 @@ export default function PlotlyPage() {
             Aggregate and regression statistics must be calculated manually and
             reduced to a set of x/y values which are then plotted
           </li>
-          <li>React support, Typescript support is an afterthought</li>
+          <li>
+            React support is decent, and actually maintained by the Plotly team
+            (not the case for the other libraries whose react bindings seem
+            abandoned/unmaintained). Typescript support is not great, but at
+            least present.
+          </li>
         </ul>
         <h2>Chart Settings</h2>
         <div className={styles.formWrap}>
