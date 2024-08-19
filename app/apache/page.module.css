@@ -17,12 +17,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .chartWrap {
-    filter: invert(75%) hue-rotate(180deg);
-  }
-}
-
 .chartWrap {
   height: 80vh;
   margin-top: 1.5rem;

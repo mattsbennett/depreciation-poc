@@ -1,5 +1,7 @@
 import { PolynomialRegression } from "ml-regression-polynomial";
 import { std } from "mathjs";
+import { ScatterSeriesOption } from "echarts";
+import { DatasetOption } from "echarts/types/dist/shared";
 
 function getRandomPrice(date: Date, avg: number, skew: number): number {
   const year = date.getFullYear();
@@ -42,9 +44,9 @@ function getRandomModelYear(min: number, max:number, price: number, targetAvgPri
   return modelYear;
 }
 
-export interface NivoDataset {
-  id: string;
-  data: { x: Date; y: number }[];
+export interface ApacheData {
+  datasets: DatasetOption[];
+  series: ScatterSeriesOption[];
 }
 
 export interface ChartJsDataset {
@@ -351,24 +353,27 @@ export function getChartJsData(
   return Array.from(datasets.values());
 }
 
-export function getNivoData(
+export function getApacheData(
   numRecords = 1000,
-  polyDegree = 3,
   priceSkew = 0.7,
   minModelYear = 2016,
   maxModelYear = 2020,
   targetAvgPrice = 18000,
   minDate = new Date("2020-01-01"),
   maxDate = new Date("2024-01-01"),
-): NivoDataset[] {
+) : ApacheData {
   const datasets = new Map();
-  const dates = Array<Date>();
-  const prices = Array<number>();
+  const series = new Map();
 
   for (let i = minModelYear; i <= maxModelYear; i++) {
     datasets.set(i, {
-      data: [],
-      id: i,
+      dimensions: ['x', 'y'],
+      source: [],
+    });
+    series.set(i, {
+      type: "scatter",
+      datasetIndex: i - minModelYear,
+      name: `${i}`
     });
   }
 
@@ -377,97 +382,11 @@ export function getNivoData(
     const price = getRandomPrice(date, targetAvgPrice, priceSkew);
     const modelYear = getRandomModelYear(minModelYear, maxModelYear, price, targetAvgPrice);
 
-    datasets.get(modelYear).data.push({ x: date, y: price });
-    dates.push(date);
-    prices.push(price);
+    datasets.get(modelYear).source.push({ x: date, y: price, series: modelYear });
   }
 
-  // Sort the dates and prices together
-  const combined = dates.map((date, index) => ({
-    date,
-    price: prices[index]
-  }));
-  combined.sort(
-    (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
-  );
-
-  const sortedDates = combined.map(item => item.date);
-  const sortedPrices = combined.map(item => item.price);
-
-  // Calculate the mean of all the y data
-  const meanPrice =
-    prices.reduce((sum, price) => sum + price, 0) / prices.length;
-
-  // Calculate the error (example with dummy data)
-  const error = parseInt(std(sortedPrices, "biased").toString(), 10); // Example: 10% error
-
-  // Convert date strings to numerical values for regression
-  const xNumerical = sortedDates.map(date => new Date(date).getTime());
-
-  // Perform polynomial regression
-  const regression = new PolynomialRegression(xNumerical, sortedPrices, polyDegree);
-
-  // Generate polynomial curve
-  const minX = Math.min(...xNumerical);
-  const maxX = Math.max(...xNumerical);
-  const step = (maxX - minX) / 100;
-  const polynomialPoints = [];
-  const meanPoints = [];
-  const upperBoundPoints = [];
-  const lowerBoundPoints = [];
-
-  for (let x = minX; x <= maxX; x += step) {
-    meanPoints.push({
-      x: new Date(x).toISOString().split("T")[0],
-      y: meanPrice
-    });
-    upperBoundPoints.push({
-      x: new Date(x).toISOString().split("T")[0],
-      y: meanPrice + error
-    });
-    lowerBoundPoints.push({
-      x: new Date(x).toISOString().split("T")[0],
-      y: meanPrice - error
-    });
-    polynomialPoints.push({
-      x: new Date(x).toISOString().split("T")[0],
-      y: regression.predict(x)
-    });
-  }
-
-  // datasets.set("poly", {
-  //   data: polynomialPoints,
-  //   label: "Polynomial Regression",
-  //   pointRadius: 0,
-  //   type: "line"
-  // });
-
-  // datasets.set("mean", {
-  //   data: meanPoints,
-  //   label: "Mean",
-  //   pointRadius: 0,
-  //   type: "line"
-  // });
-
-  // datasets.set("upper", {
-  //   borderWidth: 0,
-  //   data: upperBoundPoints,
-  //   label: "",
-  //   pointRadius: 0,
-  //   type: "line",
-  //   fill: false
-  // });
-
-  // datasets.set("lower", {
-  //   // Once you set a backgroundColor on one dataset, you have to manually set it on all datasets
-  //   // backgroundColor: "rgba(54, 151, 227, 0.3)",
-  //   borderWidth: 0,
-  //   data: lowerBoundPoints,
-  //   label: "Std Dev",
-  //   pointRadius: 0,
-  //   type: "line",
-  //   fill: "-1"
-  // });
-
-  return Array.from(datasets.values());
+  return {
+    datasets: Array.from(datasets.values()),
+    series: Array.from(series.values()),
+  };
 }

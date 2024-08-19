@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { NivoDataset, getNivoData } from "../mockDataGenerator";
+import { ApacheData, getApacheData } from "../mockDataGenerator";
 import Header from "../components/Header";
 import { Button } from "../components/Button";
 import { Slider } from "../components/Slider";
@@ -18,13 +18,14 @@ import {
   FormLabel,
   FormMessage
 } from "../components/Form";
-import NivoExample from "../components/NivoExample";
 import { chartFormSchema } from "../utils/chartFormUtils";
 import styles from "./page.module.css";
 import clsx from "clsx";
+import ApacheExample from "../components/ApacheExample";
+import { DatasetOption } from "echarts/types/dist/shared";
 
-export default function ChartJsPage() {
-  const [datasets, setDatasets] = useState<NivoDataset[]>(getNivoData());
+export default function ApacheEchartsPage() {
+  const [datasets, setDatasets] = useState<ApacheData>(getApacheData());
   const form = useForm<z.infer<typeof chartFormSchema>>({
     resolver: zodResolver(chartFormSchema),
     defaultValues: {
@@ -34,21 +35,18 @@ export default function ChartJsPage() {
   });
 
   function onSubmit(values: z.infer<typeof chartFormSchema>) {
-    setDatasets(getNivoData(values.recordCount, values.polyDegree));
+    setDatasets(getApacheData(values.recordCount, values.polyDegree));
   }
 
   return (
     <>
       <Header />
       <main className={styles.main}>
-        <h1>Nivo Example</h1>
+        <h1>Apache ECharts Example</h1>
         <h2>Notes</h2>
         <ul>
           <li>
-            Zoom/pan must be implemented manually
-          </li>
-          <li>
-            Composable charts/layers are complicated to implement
+            Interactions are extensive, and mobile optimized.
           </li>
         </ul>
         <h2>Chart Settings</h2>
@@ -103,12 +101,12 @@ export default function ChartJsPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Apply</Button>
+              <Button type="submit" variant='outline'>Apply</Button>
             </form>
           </Form>
         </div>
         <div className={clsx(styles.chartWrap, styles.nivoChart)}>
-          <NivoExample dataset={datasets} />
+          <ApacheExample />
         </div>
       </main>
     </>

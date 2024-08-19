@@ -146,7 +146,7 @@ export default function VegaLitePage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Apply</Button>
+              <Button type="submit" variant='outline'>Apply</Button>
             </form>
           </Form>
         </div>
