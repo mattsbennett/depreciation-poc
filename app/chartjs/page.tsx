@@ -51,7 +51,7 @@ export default function ChartJsPage() {
           <li>
             Pinch zoom/multi-touch on mobile are best of tested solutions. With
             trackpads/touch, zoom sometimes doesn&apos;t work until after a pan,
-            and isn't as smooth as Plotly.
+            and isn&apos;t as smooth as Plotly.
           </li>
           <li>
             Interactions are limited out-of-the-box, but mostly sufficient for
