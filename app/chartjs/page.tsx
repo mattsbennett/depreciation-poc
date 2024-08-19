@@ -44,6 +44,9 @@ export default function ChartJsPage() {
         <h2>Notes</h2>
         <ul>
           <li>
+            Design is simple/clean
+          </li>
+          <li>
             Once a specific color is set on one dataset, all datasets must have
             colors manually set (hence why mean and stddev don&apos;t match
             here, didn&apos;t bother optimizing colors)

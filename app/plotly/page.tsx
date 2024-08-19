@@ -44,6 +44,10 @@ export default function PlotlyPage() {
         <h2>Notes</h2>
         <ul>
           <li>
+            Design is somewhat dated, extensive theme/customization effort may
+            be required
+          </li>
+          <li>
             Interactions are extensive out-of-the-box (handy click/double-click
             actions on legend, though double-click is not entirely intuitive),
             though more complicated (uses a toolbar, most of which we could

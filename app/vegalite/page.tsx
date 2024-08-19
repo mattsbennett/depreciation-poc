@@ -53,6 +53,9 @@ export default function VegaLitePage() {
         <h2>Notes</h2>
         <ul>
           <li>
+            Design is dated, will require extensive theme/customization effort
+          </li>
+          <li>
             {"Doesn't seem to be a way to constrain zoom to min/max ranges"}
           </li>
           <li>
@@ -60,7 +63,9 @@ export default function VegaLitePage() {
             <a href="https://vega.github.io/vega/examples/zoomable-scatter-plot/">
               is barely functional
             </a>{" "}
-            (didn&apos;t bother to implement here as it&apos;s so bad)
+            (didn&apos;t bother to implement here as it&apos;s so bad). We
+            likely could implement our own zoom/pan controls, but it would be a
+            significant effort.
           </li>
           <li>
             Interactive legend is nice, but it&apos;s not clear how to disable
@@ -134,8 +139,8 @@ export default function VegaLitePage() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Degree to use for polynomial regression (there&apos;s a bug
-                      either in react-vega or my implementation here)
+                      Degree to use for polynomial regression (there&apos;s a
+                      bug either in react-vega or my implementation here)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
