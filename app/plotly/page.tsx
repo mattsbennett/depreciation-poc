@@ -53,9 +53,9 @@ export default function PlotlyPage() {
             No multi-touch support; zoom uses brush pattern instead of pinch,
             which works well; wheel zoom is generally the smoothest of options
             evaluated. Kind of annoying that native pan/zoom doesn&apos;t work
-            for trackpads/mobile (must toggle pan/zoom using toolbar), but none
-            of the tested libraries provide usable pinch, and at least this
-            approach works flawlessly, if not less intuitively.
+            for trackpads/mobile (must toggle pan/zoom using toolbar) but this
+            approach works flawlessly and without the jank of chartjs&apos;s
+            pinch. Probably also slightly less intuitive than pinch however.
           </li>
           <li>
             Helper tooltips show on chart actions (hover, click, etc.), will
