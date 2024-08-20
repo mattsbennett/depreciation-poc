@@ -44,10 +44,10 @@ export default function ApacheExample() {
           restore: {},
         }
       }}
-      title={{
-        show: true,
-        text: "Audi Q7 Prices"
-      }}
+      // title={{
+      //   show: true,
+      //   text: "Audi Q7 Prices"
+      // }}
       dataZoom={[
         {
           type: "slider",
