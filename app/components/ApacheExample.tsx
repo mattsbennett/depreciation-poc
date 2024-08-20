@@ -20,10 +20,33 @@ export default function ApacheExample() {
         type: "value",
         scale: true
       }}
+      theme={"dark"}
       dataset={datasets}
       series={series}
       legend={{
-        data: series.map(s => s.name)  as LegendComponentOption["data"]
+        data: series.map(s => s.name)  as LegendComponentOption["data"],
+        tooltip: {
+          show: true
+        }
+      }}
+      tooltip={{
+        trigger: "item",
+        axisPointer: {
+          type: "cross"
+        }
+      }}
+      toolbox={{
+        show: true,
+        feature: {
+          dataZoom: {
+            yAxisIndex: "none"
+          },
+          restore: {},
+        }
+      }}
+      title={{
+        show: true,
+        text: "Audi Q7 Prices"
       }}
       dataZoom={[
         {
