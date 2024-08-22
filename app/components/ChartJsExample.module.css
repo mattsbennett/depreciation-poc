@@ -1,0 +1,13 @@
+.drawerSpan {
+    display: block;
+    padding: 0.5rem 1.5rem;
+}
+
+.dialogSpan {
+    display: block;
+    padding: 0.25rem 0;
+}
+
+.dialogDescription {
+    margin-top: 0.75rem;
+}

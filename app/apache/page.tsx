@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import dynamic from "next/dynamic";
 
 import { ApacheData, getApacheData } from "../mockDataGenerator";
 import Header from "../components/Header";
@@ -21,8 +22,10 @@ import {
 import { chartFormSchema } from "../utils/chartFormUtils";
 import styles from "./page.module.css";
 import clsx from "clsx";
-import ApacheExample from "../components/ApacheExample";
-import { DatasetOption } from "echarts/types/dist/shared";
+
+const ApacheExample = dynamic(() => import("../components/ApacheExample"), {
+  ssr: false
+});
 
 export default function ApacheEchartsPage() {
   const [datasets, setDatasets] = useState<ApacheData>(getApacheData());
@@ -45,9 +48,15 @@ export default function ApacheEchartsPage() {
         <h1>Apache ECharts Example</h1>
         <h2>Notes</h2>
         <ul>
+          <li>Design is simple/clean, with plenty of useful UX out of the box</li>
+          <li>Extensive customization options, including full theme system</li>
           <li>
-            Interactions are extensive, and mobile optimized.
+            Interactions are highly customizable, and mobile optimized; best of
+            the options considered. For example, easy to zoom x-axis only by
+            default, but allow y-axis zooming with minimap and holding shift key
+            on desktop.
           </li>
+          <li>Typescript support is excellent: Not a single bug/ts-ignore required to build example. There are several react wrappers available; most are abandoned, though one is recent, and the author at least responded promptly when I opened an <a href="https://github.com/hugocxl/react-echarts/issues/45" target="_blank">issue</a>.</li>
         </ul>
         <h2>Chart Settings</h2>
         <div className={styles.formWrap}>
@@ -63,8 +72,12 @@ export default function ApacheEchartsPage() {
                     </FormLabel>
                     <FormControl>
                       <Slider
-                        min={chartFormSchema.shape.recordCount.minValue as number}
-                        max={chartFormSchema.shape.recordCount.maxValue as number}
+                        min={
+                          chartFormSchema.shape.recordCount.minValue as number
+                        }
+                        max={
+                          chartFormSchema.shape.recordCount.maxValue as number
+                        }
                         step={100}
                         defaultValue={[1000]}
                         onChange={onChange}
@@ -87,8 +100,12 @@ export default function ApacheEchartsPage() {
                     </FormLabel>
                     <FormControl>
                       <Slider
-                        min={chartFormSchema.shape.polyDegree.minValue as number}
-                        max={chartFormSchema.shape.polyDegree.maxValue as number}
+                        min={
+                          chartFormSchema.shape.polyDegree.minValue as number
+                        }
+                        max={
+                          chartFormSchema.shape.polyDegree.maxValue as number
+                        }
                         step={1}
                         defaultValue={[3]}
                         onChange={onChange}
@@ -101,12 +118,14 @@ export default function ApacheEchartsPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant='outline'>Apply</Button>
+              <Button type="submit" variant="outline">
+                Apply
+              </Button>
             </form>
           </Form>
         </div>
         <div className={clsx(styles.chartWrap, styles.nivoChart)}>
-          <ApacheExample />
+          <ApacheExample data={datasets} />
         </div>
       </main>
     </>

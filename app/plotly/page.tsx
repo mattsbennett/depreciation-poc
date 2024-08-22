@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import dynamic from "next/dynamic";
 
 import { PlotlyDataset, getPlotlyData } from "../mockDataGenerator";
 import Header from "../components/Header";
@@ -18,9 +19,12 @@ import {
   FormLabel,
   FormMessage
 } from "../components/Form";
-import PlotlyExample from "../components/PlotlyExample";
 import { chartFormSchema } from "../utils/chartFormUtils";
 import styles from "./page.module.css";
+
+const PlotlyExample = dynamic(() => import("../components/PlotlyExample"), {
+  ssr: false
+});
 
 export default function PlotlyPage() {
   const [datasets, setDatasets] = useState<PlotlyDataset[]>(getPlotlyData());

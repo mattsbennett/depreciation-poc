@@ -2,6 +2,7 @@ import { PolynomialRegression } from "ml-regression-polynomial";
 import { std } from "mathjs";
 import { ScatterSeriesOption } from "echarts";
 import { DatasetOption } from "echarts/types/dist/shared";
+import { z } from "zod";
 
 function getRandomPrice(date: Date, avg: number, skew: number): number {
   const year = date.getFullYear();
@@ -35,12 +36,16 @@ function getRandomDate(start: Date, end: Date): Date {
   );
 }
 
-function getRandomModelYear(min: number, max:number, price: number, targetAvgPrice: number): number {
+function getRandomModelYear(
+  min: number,
+  max: number,
+  price: number,
+  targetAvgPrice: number
+): number {
   const skew = price > targetAvgPrice ? 0.4 : 1.7; // Skew towards higher years if price > avgPrice
 
   const yearRange = max - min + 1;
-  let modelYear =
-    min + Math.floor(Math.pow(Math.random(), skew) * yearRange);
+  let modelYear = min + Math.floor(Math.pow(Math.random(), skew) * yearRange);
   return modelYear;
 }
 
@@ -49,14 +54,20 @@ export interface ApacheData {
   series: ScatterSeriesOption[];
 }
 
+export interface DataPoint {
+  x: Date;
+  y: number;
+  series: number | string;
+}
+
 export interface ChartJsDataset {
   label: string;
   data: { x: Date; y: number }[];
-  pointRadius?: number
-  pointHoverRadius?: number
-  type?: string
-  borderWidth?: number
-  fill?: boolean|number|string
+  pointRadius?: number;
+  pointHoverRadius?: number;
+  type?: string;
+  borderWidth?: number;
+  fill?: boolean | number | string;
 }
 
 export interface VegaLiteDataset {
@@ -83,7 +94,7 @@ export function getVegaLiteData(
   maxModelYear = 2020,
   targetAvgPrice = 18000,
   minDate = new Date("2020-01-01"),
-  maxDate = new Date("2024-01-01"),
+  maxDate = new Date("2024-01-01")
 ) {
   const dataset: VegaLiteDataset[] = [];
 
@@ -93,13 +104,20 @@ export function getVegaLiteData(
     const record = {
       date: date,
       price: price,
-      modelYear: getRandomModelYear(minModelYear, maxModelYear, price, targetAvgPrice)
+      modelYear: getRandomModelYear(
+        minModelYear,
+        maxModelYear,
+        price,
+        targetAvgPrice
+      )
     };
 
     dataset.push(record);
   }
 
-  dataset.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  dataset.sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
 
   return dataset;
 }
@@ -112,7 +130,7 @@ export function getPlotlyData(
   maxModelYear = 2020,
   targetAvgPrice = 18000,
   minDate = new Date("2020-01-01"),
-  maxDate = new Date("2024-01-01"),
+  maxDate = new Date("2024-01-01")
 ): PlotlyDataset[] {
   const datasets = new Map();
   const dates = Array<Date>();
@@ -134,7 +152,12 @@ export function getPlotlyData(
   for (let i = 0; i < numRecords; i++) {
     const date = getRandomDate(minDate, maxDate);
     const price = getRandomPrice(date, targetAvgPrice, priceSkew);
-    const modelYear = getRandomModelYear(minModelYear, maxModelYear, price, targetAvgPrice);
+    const modelYear = getRandomModelYear(
+      minModelYear,
+      maxModelYear,
+      price,
+      targetAvgPrice
+    );
 
     datasets.get(modelYear).x.push(date);
     datasets.get(modelYear).y.push(price);
@@ -172,7 +195,11 @@ export function getPlotlyData(
   const xNumerical = sortedDates.map(date => new Date(date).getTime());
 
   // Perform polynomial regression
-  const regression = new PolynomialRegression(xNumerical, sortedPrices, polyDegree);
+  const regression = new PolynomialRegression(
+    xNumerical,
+    sortedPrices,
+    polyDegree
+  );
 
   // Generate polynomial curve
   const polynomialX = [];
@@ -238,7 +265,7 @@ export function getChartJsData(
   maxModelYear = 2020,
   targetAvgPrice = 18000,
   minDate = new Date("2020-01-01"),
-  maxDate = new Date("2024-01-01"),
+  maxDate = new Date("2024-01-01")
 ): ChartJsDataset[] {
   const datasets = new Map();
   const dates = Array<Date>();
@@ -256,7 +283,12 @@ export function getChartJsData(
   for (let i = 0; i < numRecords; i++) {
     const date = getRandomDate(minDate, maxDate);
     const price = getRandomPrice(date, targetAvgPrice, priceSkew);
-    const modelYear = getRandomModelYear(minModelYear, maxModelYear, price, targetAvgPrice);
+    const modelYear = getRandomModelYear(
+      minModelYear,
+      maxModelYear,
+      price,
+      targetAvgPrice
+    );
 
     datasets.get(modelYear).data.push({ x: date, y: price });
     dates.push(date);
@@ -286,7 +318,11 @@ export function getChartJsData(
   const xNumerical = sortedDates.map(date => new Date(date).getTime());
 
   // Perform polynomial regression
-  const regression = new PolynomialRegression(xNumerical, sortedPrices, polyDegree);
+  const regression = new PolynomialRegression(
+    xNumerical,
+    sortedPrices,
+    polyDegree
+  );
 
   // Generate polynomial curve
   const minX = Math.min(...xNumerical);
@@ -355,20 +391,23 @@ export function getChartJsData(
 
 export function getApacheData(
   numRecords = 1000,
+  polyDegree = 3,
   priceSkew = 0.7,
   minModelYear = 2016,
   maxModelYear = 2020,
   targetAvgPrice = 18000,
   minDate = new Date("2020-01-01"),
-  maxDate = new Date("2024-01-01"),
-) : ApacheData {
+  maxDate = new Date("2024-01-01")
+): ApacheData {
   const datasets = new Map();
   const series = new Map();
+  const dates = Array<Date>();
+  const prices = Array<number>();
 
   for (let i = minModelYear; i <= maxModelYear; i++) {
     datasets.set(i, {
-      dimensions: ['x', 'y'],
-      source: [],
+      dimensions: ["x", "y"],
+      source: []
     });
     series.set(i, {
       type: "scatter",
@@ -380,13 +419,145 @@ export function getApacheData(
   for (let i = 0; i < numRecords; i++) {
     const date = getRandomDate(minDate, maxDate);
     const price = getRandomPrice(date, targetAvgPrice, priceSkew);
-    const modelYear = getRandomModelYear(minModelYear, maxModelYear, price, targetAvgPrice);
+    const modelYear = getRandomModelYear(
+      minModelYear,
+      maxModelYear,
+      price,
+      targetAvgPrice
+    );
 
-    datasets.get(modelYear).source.push({ x: date, y: price, series: modelYear });
+    dates.push(date);
+    prices.push(price);
+
+    datasets
+      .get(modelYear)
+      .source.push({ x: date, y: price, series: modelYear });
   }
+
+  // Sort the dates and prices together
+  const combined = dates.map((date, index) => ({
+    date,
+    price: prices[index]
+  }));
+  combined.sort(
+    (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
+  );
+
+  const sortedDates = combined.map(item => item.date);
+  const sortedPrices = combined.map(item => item.price);
+
+  // Calculate the mean of all the y data
+  const meanPrice =
+    prices.reduce((sum, price) => sum + price, 0) / prices.length;
+
+  // Calculate the error (example with dummy data)
+  const error = parseInt(std(sortedPrices, "biased").toString());
+
+  // Convert date strings to numerical values for regression
+  const xNumerical = sortedDates.map(date => new Date(date).getTime());
+
+  // Perform polynomial regression
+  const regression = new PolynomialRegression(
+    xNumerical,
+    sortedPrices,
+    polyDegree
+  );
+
+  // Generate polynomial curve
+  const minX = Math.min(...xNumerical);
+  const maxX = Math.max(...xNumerical);
+  const step = (maxX - minX) / 100;
+  const polynomialPoints = [];
+  const meanPoints = [];
+  const upperBoundPoints = [];
+  const lowerBoundPoints = [];
+  const diffPoints = [];
+
+  console.log(error, meanPrice);
+
+  for (let x = minX; x <= maxX; x += step) {
+    meanPoints.push({
+      x: new Date(x),
+      y: meanPrice,
+      series: "mean"
+    });
+    upperBoundPoints.push({
+      x: new Date(x),
+      y: error * 2,
+      series: "upper"
+    });
+    lowerBoundPoints.push({
+      x: new Date(x),
+      y: meanPrice - error,
+      series: "lower"
+    });
+    diffPoints.push({
+      x: new Date(x),
+      y: meanPrice - error - (meanPrice + error),
+      series: "± 1 Std Dev"
+    });
+    polynomialPoints.push({
+      x: new Date(x),
+      y: regression.predict(x),
+      series: "polynomial"
+    });
+  }
+
+  datasets.set("regression", {
+    dimensions: ["x", "y"],
+    source: polynomialPoints
+  });
+  series.set("regression", {
+    type: "line",
+    datasetIndex: datasets.size - 1,
+    name: "Polynomial Regression",
+    showSymbol: false
+  });
+  datasets.set("mean", {
+    dimensions: ["x", "y"],
+    source: meanPoints
+  });
+  series.set("mean", {
+    type: "line",
+    datasetIndex: datasets.size - 1,
+    name: "Mean",
+    showSymbol: false
+  });
+  datasets.set("lower", {
+    dimensions: ["x", "y"],
+    source: lowerBoundPoints
+  });
+  series.set("lower", {
+    type: "line",
+    datasetIndex: datasets.size - 1,
+    name: "lowerBound",
+    showSymbol: false,
+    lineStyle: {
+      opacity: 0
+    },
+    stack: "x",
+  });
+  datasets.set("upper", {
+    dimensions: ["x", "y"],
+    source: upperBoundPoints
+  });
+  series.set("upper", {
+    type: "line",
+    datasetIndex: datasets.size - 1,
+    name: "± 1 Std Dev",
+    showSymbol: false,
+    stack: "x",
+    areaStyle: {
+      opacity: 0.2
+    },
+    lineStyle: {
+      opacity: 0
+    },
+    z: -1
+  });
 
   return {
     datasets: Array.from(datasets.values()),
-    series: Array.from(series.values()),
+    series: Array.from(series.values())
   };
 }

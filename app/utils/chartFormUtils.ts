@@ -1,6 +1,7 @@
 import { VisualizationSpec } from "react-vega";
 import { z } from "zod";
-import { VegaLiteDataset } from "../mockDataGenerator";
+import { ApacheData, VegaLiteDataset } from "../mockDataGenerator";
+import { title } from "vega-lite/build/src/channeldef";
 
 export const chartFormSchema = z.object({
   recordCount: z.coerce
@@ -17,7 +18,6 @@ export function getVegaLiteSpec(
   polyOrder: number,
   dataset: VegaLiteDataset[]
 ): VisualizationSpec {
-    console.log(polyOrder);
   const spec = {
     background: "transparent",
     title: "Audi Q7 Prices",
@@ -173,4 +173,77 @@ export function getVegaLiteSpec(
   } as VisualizationSpec;
 
   return spec;
+}
+
+export function getEChartsOptions(data: ApacheData) {
+  return {
+    xAxis: {
+      type: "time"
+    },
+    yAxis: {
+      type: "value",
+      scale: true
+    },
+    dataset: data.datasets,
+    series: data.series,
+    grid: {
+      top: 50,
+      bottom: 150
+    },
+    legend: {
+      data: data.series.map(s => s.name),
+      bottom: 0
+    },
+    tooltip: {
+      trigger: "item",
+      axisPointer: {
+        type: "cross"
+      }
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        dataZoom: {
+          yAxisIndex: "none"
+        },
+        restore: {}
+      }
+    },
+    title: {
+      show: true,
+      text: "Audi Q7 Prices",
+      left: "center"
+    },
+    dataZoom: [
+      {
+        type: "slider",
+        show: true,
+        xAxisIndex: [0],
+        start: 0,
+        end: 35,
+        bottom: 80
+      },
+      {
+        type: "slider",
+        show: true,
+        yAxisIndex: [0],
+        left: "93%",
+        start: 0,
+        end: 35000
+      },
+      {
+        type: "inside",
+        xAxisIndex: [0],
+        start: 0,
+        end: 35
+      },
+      {
+        type: "inside",
+        yAxisIndex: [0],
+        start: 0,
+        end: 35000,
+        zoomOnMouseWheel: "shift"
+      }
+    ]
+  };
 }

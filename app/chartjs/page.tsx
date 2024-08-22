@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import dynamic from "next/dynamic";
 
 import { ChartJsDataset, getChartJsData } from "../mockDataGenerator";
 import Header from "../components/Header";
@@ -18,9 +19,12 @@ import {
   FormLabel,
   FormMessage
 } from "../components/Form";
-import ChartJsExample from "../components/ChartJsExample";
 import { chartFormSchema } from "../utils/chartFormUtils";
 import styles from "./page.module.css";
+
+const ChartJsExample = dynamic(() => import("../components/ChartJsExample"), {
+  ssr: false
+});
 
 export default function ChartJsPage() {
   const [datasets, setDatasets] = useState<ChartJsDataset[]>(getChartJsData());
@@ -43,18 +47,15 @@ export default function ChartJsPage() {
         <h1>Chart.js Example</h1>
         <h2>Notes</h2>
         <ul>
-          <li>
-            Design is simple/clean
-          </li>
+          <li>Design is simple/clean</li>
           <li>
             Once a specific color is set on one dataset, all datasets must have
             colors manually set (hence why mean and stddev don&apos;t match
             here, didn&apos;t bother optimizing colors)
           </li>
           <li>
-            Pinch zoom/multi-touch on mobile are best of tested solutions. With
-            trackpads/touch, zoom sometimes doesn&apos;t work until after a pan,
-            and isn&apos;t as smooth as Plotly.
+            With trackpads/touch, zoom sometimes doesn&apos;t work until after a
+            pan, and isn&apos;t as smooth as Plotly.
           </li>
           <li>
             Interactions are limited out-of-the-box, but mostly sufficient for
@@ -129,7 +130,9 @@ export default function ChartJsPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant="outline">Apply</Button>
+              <Button type="submit" variant="outline">
+                Apply
+              </Button>
             </form>
           </Form>
         </div>
