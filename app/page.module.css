@@ -46,6 +46,10 @@
   text-align: center;
 }
 
+.main h2 {
+  margin-bottom: 1.5rem;
+}
+
 .main a {
   display: flex;
   font-size: 1.25rem;

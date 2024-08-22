@@ -7,9 +7,9 @@ import styles from "./Header.module.css";
 import { usePathname } from "next/navigation";
 
 const pages = {
+    "/apache": "Apache ECharts",
     "/chartjs": "Chart.js",
     "/plotly": "Plotly.js",
-    "/vegalite": "Vega-Lite",
 }
 
 export default function Header() {
