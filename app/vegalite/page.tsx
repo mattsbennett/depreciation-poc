@@ -43,8 +43,6 @@ export default function VegaLitePage() {
     setSpec(getVegaLiteSpec(values.polyDegree, dataset));
   }
 
-  console.log(spec);
-
   return (
     <>
       <Header />

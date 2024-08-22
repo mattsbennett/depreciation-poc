@@ -473,8 +473,6 @@ export function getApacheData(
   const lowerBoundPoints = [];
   const diffPoints = [];
 
-  console.log(error, meanPrice);
-
   for (let x = minX; x <= maxX; x += step) {
     meanPoints.push({
       x: new Date(x),
