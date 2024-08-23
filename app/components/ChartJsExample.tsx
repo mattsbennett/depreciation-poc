@@ -46,20 +46,19 @@ export default function ChartJsExample({
   const triggerRef = useRef<HTMLDivElement>(null);
 
   const handleChartClick = (event: MouseEvent<HTMLCanvasElement>) => {
-    triggerRef.current?.click();
-
     if (!chartRef.current) {
       return;
     }
 
     const element = getElementAtEvent(chartRef.current, event);
 
-    if (!element) {
+    if (!element || !element[0]) {
       return;
     }
 
     const { datasetIndex, index } = element[0];
 
+    triggerRef.current?.click();
     setDialogData({
       series: datasets[datasetIndex].label,
       x: datasets[datasetIndex].data[index].x,
