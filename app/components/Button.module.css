@@ -1,4 +1,5 @@
 .common {
+  appearance: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -16,7 +17,7 @@
 
 .common:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgb(var(--foreground-secondary-rgb));
+  box-shadow: 0 0 0 2px rgb(var(--background-tertiary-rgb));
 }
 
 .common:disabled {
@@ -24,22 +25,27 @@
   opacity: 0.5;
 }
 
+.common svg {
+  margin-left: 0.25rem;
+}
+
 .default {
-  background-color: rgb(var(--foreground-secondary-rgb));
+  background-color: rgb(var(--background-tertiary-rgb));
+  border: 0;
   color: rgb(var(--foreground-rgb));
 }
 
 .default:hover {
-  background-color: rgba(var(--foreground-secondary-rgb), 0.9);
+  background-color: rgba(var(--foreground-secondary-rgb), 0.2);
 }
 
 .outline {
   background-color: transparent;
-  border: 1px solid rgb(var(--foreground-rgb));
+  border: 1px solid rgba(var(--foreground-secondary-rgb), 0.5);
 }
 
 .outline:hover {
-  color: rgb(var(--foreground-rgb));
+  border-color: rgb(var(--foreground-rgb));
 }
 
 .secondary {
@@ -51,8 +57,14 @@
   background-color: rgba(var(--card-rgb), 0.9);
 }
 
+.ghost {
+  background-color: transparent;
+  border: 0;
+  color: rgb(var(--foreground-secondary-rgb));
+}
+
 .ghost:hover {
-  background-color: rgb(var(--foreground-secondary-rgb));
+  background-color: rgb(var(--background-tertiary-rgb));
   color: rgb(var(--foreground-rgb));
 }
 

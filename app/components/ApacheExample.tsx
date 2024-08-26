@@ -39,10 +39,25 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
-} from "../components/Drawer"
+  DrawerTrigger
+} from "../components/Drawer";
 import { Button } from "./Button";
 import styles from "./ApacheExample.module.css";
+import Image from "next/image";
+import { ExternalLink } from "lucide-react";
+
+const images: { [key: string]: string } = {
+  "2016":
+    "https://thumb.autotempest.com/cm/WA1LAAF72HD016719_4f3ac0e7-0650-4f9d-8447-cf458230ef80_fb41750e739d72d68311cec150970828_96045_32b1a6e70e9ea18949ebcf3007e05355.webp",
+  "2017":
+    "https://thumb.autotempest.com/cm/WA1VAAF74HD005018_ebf5cfbd-5644-44ca-895e-65411a58eafd_c8132b1d6abee5c53731b74b5508231d_72514_ce0cb575c6c7cdaec738a617d290f35c.webp",
+  "2018":
+    "https://thumb.autotempest.com/cm/WA1LAAF79JD020997_9c8dee54-469a-468a-a441-aa0f4d30d2db_6a7fc7d7ba255cf2ae418de2de5c59f1_64587_473395cc6a19aeb047990e5432b5eb89.webp",
+  "2019":
+    "https://thumb.autotempest.com/cm/WA1AAAF70KD004888_700fb547-a18c-4d09-8442-c0cf81ad32ff_467c88370e6886cb80ebd9dcee4696d3_96064_428e3b8bbd19d58b9eb6f8fa21603e38.webp",
+  "2020":
+    "https://thumb.autotempest.com/cm/WA1LXAF76LD005326_a99a8be0-6c1a-4c8d-a2fc-dcc2f2295ca5_df5ac22e87d6c1c33e5fd51b4d719f09_71489_854aab18a95b3d1756471638b5e0c2fd.webp"
+};
 
 export default function ApacheExample({ data }: { data: ApacheData }) {
   const [mounted, setMounted] = useState(false);
@@ -67,7 +82,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
       filterMode: "none",
       handleSize: 55,
       moveHandleSize: 13
-    },
+    }
   };
   const wideStyles = {
     grid: {
@@ -87,14 +102,18 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
       filterMode: "none",
       handleSize: 55,
       moveHandleSize: 13
-    },
+    }
   };
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const triggerRef = useRef<HTMLDivElement>(null);
 
-  const legendData = data.series.filter((series) => {
-    return series.name !== 'lowerBound'
-  })
+  const legendData = data.series.filter(series => {
+    return series.name !== "lowerBound";
+  });
+
+  const tooltipFormatter = (params: any) => {
+    return `<div style="color: rgb(var(--foreground-rgb));"><h4 style="display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 0.5rem;"><span style="display: inline-block; background-color: ${params.color}; width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-right: 0.25rem;"></span>${params.seriesName} Audi Q7</h4><img style="height: 100px; width: auto;" src="${images[params.seriesName]}" /><div>${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(params.value.y)}</div><div>${params.value.x.toDateString()}</div></div>`;
+  };
 
   const handleChartClick = (params: any) => {
     triggerRef.current?.click();
@@ -127,7 +146,12 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           DatasetComponent
         ]}
         renderer="canvas"
-        style={{ width: "100%", height: "90vh", maxHeight: "800px", minHeight: "500px" }}
+        style={{
+          width: "100%",
+          height: "90vh",
+          maxHeight: "800px",
+          minHeight: "500px"
+        }}
         xAxis={{
           type: "time"
         }}
@@ -135,7 +159,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           type: "value",
           scale: true,
           axisLabel: {
-            formatter: val => `$${val/1000}K`
+            formatter: val => `$${val / 1000}K`
           }
         }}
         theme={resolvedTheme === "dark" ? darkTheme : "light"}
@@ -146,12 +170,19 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           data: legendData.map(s => s.name) as LegendComponentOption["data"],
           bottom: 0
         }}
-        tooltip={isDesktop ? {
-          trigger: "item",
-          axisPointer: {
-            type: "cross"
-          }
-        } : undefined}
+        tooltip={
+          isDesktop
+            ? {
+                backgroundColor: "rgb(var(--background-secondary-rgb))",
+                borderColor: "rgba(var(--foreground-secondary-rgb), 0.25)",
+                formatter: tooltipFormatter,
+                trigger: "item",
+                axisPointer: {
+                  type: "cross"
+                }
+              }
+            : undefined
+        }
         toolbox={{
           show: true,
           feature: {
@@ -169,7 +200,9 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           } as TitleOption & string
         }
         dataZoom={[
-          (isDesktop ? wideStyles.dataZoomX : narrowStyles.dataZoomX) as DataZoomComponentOption,
+          (isDesktop
+            ? wideStyles.dataZoomX
+            : narrowStyles.dataZoomX) as DataZoomComponentOption,
           {
             type: "slider",
             show: true,
@@ -198,25 +231,45 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
         onClick={handleChartClick as any}
       />
       {isDesktop && (
-      <Dialog>
-        <DialogTrigger style={{ display: "none" }}>
-          <div style={{ display: "none" }} ref={triggerRef} />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{`${dialogData?.series} Audi Q7`}</DialogTitle>
-            <DialogDescription className={styles.dialogDescription}>
-              <span className={styles.dialogSpan}><strong>Price:</strong> {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(dialogData?.y ?? "+Infinity")}</span>
-              <span className={styles.dialogSpan}><strong>Date:</strong> {dialogData?.x.toDateString()}</span>
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Close</Button>
-              </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        <Dialog>
+          <DialogTrigger style={{ display: "none" }}>
+            <div style={{ display: "none" }} ref={triggerRef} />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{`${dialogData?.series} Audi Q7`}</DialogTitle>
+              <DialogDescription className={styles.dialogDescription}>
+                <Image
+                  src={images[dialogData?.series ?? "2016"]}
+                  alt="Audi Q7"
+                  sizes="100vw"
+                  width={0}
+                  height={0}
+                  style={{ width: "100%", height: "auto" }}
+                />
+                <span className={styles.dialogSpan}>
+                  <strong>Price:</strong>{" "}
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                    maximumFractionDigits: 0
+                  }).format(dialogData?.y ?? "+Infinity")}
+                </span>
+                <span className={styles.dialogSpan}>
+                  <strong>Date:</strong> {dialogData?.x.toDateString()}
+                </span>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline">
+                View Listing <ExternalLink size={16} />
+              </Button>
+              <DrawerClose asChild>
+                <Button variant="default">Close</Button>
+              </DrawerClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
       {!isDesktop && (
         <Drawer>
@@ -227,13 +280,33 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
             <DrawerHeader>
               <DrawerTitle>{`${dialogData?.series} Audi Q7`}</DrawerTitle>
             </DrawerHeader>
-            <DrawerDescription>
-              <span className={styles.drawerSpan}><strong>Price:</strong> {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(dialogData?.y ?? "+Infinity")}</span>
-              <span className={styles.drawerSpan}><strong>Date:</strong> {dialogData?.x.toDateString()}</span>
+            <DrawerDescription className={styles.drawerDescription}>
+              <Image
+                src={images[dialogData?.series ?? "2016"]}
+                alt="Audi Q7"
+                sizes="100vw"
+                width={0}
+                height={0}
+                style={{ width: "100%", height: "auto" }}
+              />
+              <span className={styles.drawerSpan}>
+                <strong>Price:</strong>{" "}
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                  maximumFractionDigits: 0
+                }).format(dialogData?.y ?? "+Infinity")}
+              </span>
+              <span className={styles.drawerSpan}>
+                <strong>Date:</strong> {dialogData?.x.toDateString()}
+              </span>
             </DrawerDescription>
             <DrawerFooter>
+              <Button variant="outline">
+                View Listing <ExternalLink size={16} />
+              </Button>
               <DrawerClose asChild>
-                <Button variant="outline">Close</Button>
+                <Button variant="default">Close</Button>
               </DrawerClose>
             </DrawerFooter>
           </DrawerContent>

@@ -48,8 +48,8 @@
   --foreground-secondary-rgb: 200, 200, 200;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
-  --background-secondary-rgb: 15, 15, 15;
-  --background-tertiary-rgb: 35, 35, 35;
+  --background-secondary-rgb: 20, 20, 20;
+  --background-tertiary-rgb: 50, 50, 50;
 
   --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
   --secondary-glow: linear-gradient(
