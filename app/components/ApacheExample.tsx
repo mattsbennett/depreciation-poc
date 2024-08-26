@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { EChart } from "@kbox-labs/react-echarts";
-import { LegendComponentOption } from "echarts";
+import { DataZoomComponentOption, LegendComponentOption } from "echarts";
 import { useTheme } from "next-themes";
 import {
   DatasetComponent,
@@ -48,6 +48,47 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   const [mounted, setMounted] = useState(false);
   const [dialogData, setDialogData] = useState<DataPoint | null>(null);
   const { resolvedTheme } = useTheme();
+  // Narrow and wide styles are the same for now
+  const narrowStyles = {
+    grid: {
+      top: 50,
+      bottom: 170,
+      left: 40,
+      right: 75,
+      width: "auto"
+    },
+    dataZoomX: {
+      type: "slider",
+      show: true,
+      xAxisIndex: [0],
+      start: 0,
+      end: 35,
+      bottom: 100,
+      filterMode: "none",
+      handleSize: 55,
+      moveHandleSize: 13
+    },
+  };
+  const wideStyles = {
+    grid: {
+      top: 50,
+      bottom: 170,
+      left: 40,
+      right: 75,
+      width: "auto"
+    },
+    dataZoomX: {
+      type: "slider",
+      show: true,
+      xAxisIndex: [0],
+      start: 0,
+      end: 35,
+      bottom: 100,
+      filterMode: "none",
+      handleSize: 55,
+      moveHandleSize: 13
+    },
+  };
   const isDesktop = useMediaQuery("(min-width: 768px)")
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -86,7 +127,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           DatasetComponent
         ]}
         renderer="canvas"
-        style={{ width: "100%", height: "800px" }}
+        style={{ width: "100%", height: "90vh", maxHeight: "800px", minHeight: "500px" }}
         xAxis={{
           type: "time"
         }}
@@ -100,10 +141,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
         theme={resolvedTheme === "dark" ? darkTheme : "light"}
         dataset={data.datasets}
         series={data.series}
-        grid={{
-          top: 50,
-          bottom: 150
-        }}
+        grid={isDesktop ? wideStyles.grid : narrowStyles.grid}
         legend={{
           data: legendData.map(s => s.name) as LegendComponentOption["data"],
           bottom: 0
@@ -131,22 +169,16 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           } as TitleOption & string
         }
         dataZoom={[
-          {
-            type: "slider",
-            show: true,
-            xAxisIndex: [0],
-            start: 0,
-            end: 35,
-            bottom: 80,
-            filterMode: "none"
-          },
+          (isDesktop ? wideStyles.dataZoomX : narrowStyles.dataZoomX) as DataZoomComponentOption,
           {
             type: "slider",
             show: true,
             yAxisIndex: [0],
-            left: "93%",
+            right: 15,
             start: 0,
-            end: 35000
+            end: 35000,
+            handleSize: 55,
+            moveHandleSize: 13
           },
           {
             type: "inside",
