@@ -70,47 +70,6 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   const [yZoomEnd, setYZoomEnd] = useState<DataZoomComponentOption["end"]>(initialYZoomEnd);
   const [dialogData, setDialogData] = useState<DataPoint | null>(null);
   const { resolvedTheme } = useTheme();
-  // Narrow and wide styles are the same for now
-  const narrowStyles = {
-    grid: {
-      top: 50,
-      bottom: 170,
-      left: 40,
-      right: 75,
-      width: "auto"
-    },
-    dataZoomX: {
-      type: "slider",
-      show: true,
-      xAxisIndex: [0],
-      start: 0,
-      end: 35,
-      bottom: 100,
-      filterMode: "none",
-      handleSize: 55,
-      moveHandleSize: 13
-    }
-  };
-  const wideStyles = {
-    grid: {
-      top: 50,
-      bottom: 170,
-      left: 40,
-      right: 75,
-      width: "auto"
-    },
-    dataZoomX: {
-      type: "slider",
-      show: true,
-      xAxisIndex: [0],
-      start: 0,
-      end: 35,
-      bottom: 100,
-      filterMode: "none",
-      handleSize: 55,
-      moveHandleSize: 13
-    }
-  };
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -123,17 +82,20 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   };
 
   const handleChartClick = (params: any) => {
+    // console.log(params);
     triggerRef.current?.click();
     setDialogData(params.value as DataPoint);
   };
 
   const handleDataZoom = (params: any) => {
-    if (params.dataZoomId.includes("x_")) {
-      setXZoomStart(params.start);
-      setXZoomEnd(params.end);
-    } else if (params.dataZoomId.includes("y_")) {
-      setYZoomStart(params.start);
-      setYZoomEnd(params.end);
+    const dataZoom = params.batch ? params.batch[0] : params;
+
+    if (dataZoom.dataZoomId.includes("x_")) {
+      setXZoomStart(dataZoom.start);
+      setXZoomEnd(dataZoom.end);
+    } else if (dataZoom.dataZoomId.includes("y_")) {
+      setYZoomStart(dataZoom.start);
+      setYZoomEnd(dataZoom.end);
     }
   }
 
@@ -211,7 +173,13 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
                   type: "cross"
                 }
               }
-            : undefined
+            : {
+              formatter: tooltipFormatter,
+              trigger: "item",
+              axisPointer: {
+                type: "cross"
+              }
+            }
         }
         toolbox={{
           show: true,
