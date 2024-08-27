@@ -82,7 +82,6 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   };
 
   const handleChartClick = (params: any) => {
-    // console.log(params);
     triggerRef.current?.click();
     setDialogData(params.value as DataPoint);
   };
