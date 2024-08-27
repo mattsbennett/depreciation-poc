@@ -61,6 +61,13 @@ const images: { [key: string]: string } = {
 
 export default function ApacheExample({ data }: { data: ApacheData }) {
   const [mounted, setMounted] = useState(false);
+  const initialZoomStart = 0;
+  const initialXZoomEnd = 35;
+  const initialYZoomEnd = 35000;
+  const [xZoomStart, setXZoomStart] = useState<DataZoomComponentOption["start"]>(initialZoomStart);
+  const [xZoomEnd, setXZoomEnd] = useState<DataZoomComponentOption["end"]>(initialXZoomEnd);
+  const [yZoomStart, setYZoomStart] = useState<DataZoomComponentOption["start"]>(initialZoomStart);
+  const [yZoomEnd, setYZoomEnd] = useState<DataZoomComponentOption["end"]>(initialYZoomEnd);
   const [dialogData, setDialogData] = useState<DataPoint | null>(null);
   const { resolvedTheme } = useTheme();
   // Narrow and wide styles are the same for now
@@ -120,6 +127,23 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
     setDialogData(params.value as DataPoint);
   };
 
+  const handleDataZoom = (params: any) => {
+    if (params.dataZoomId.includes("x_")) {
+      setXZoomStart(params.start);
+      setXZoomEnd(params.end);
+    } else if (params.dataZoomId.includes("y_")) {
+      setYZoomStart(params.start);
+      setYZoomEnd(params.end);
+    }
+  }
+
+  const handleRestore = () => {
+    setXZoomStart(initialZoomStart);
+    setXZoomEnd(initialXZoomEnd);
+    setYZoomStart(initialZoomStart);
+    setYZoomEnd(initialYZoomEnd);
+  }
+
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
@@ -165,7 +189,13 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
         theme={resolvedTheme === "dark" ? darkTheme : "light"}
         dataset={data.datasets}
         series={data.series}
-        grid={isDesktop ? wideStyles.grid : narrowStyles.grid}
+        grid={{
+          top: 50,
+          bottom: 170,
+          left: 40,
+          right: 75,
+          width: "auto"
+        }}
         legend={{
           data: legendData.map(s => s.name) as LegendComponentOption["data"],
           bottom: 0
@@ -200,35 +230,49 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           } as TitleOption & string
         }
         dataZoom={[
-          (isDesktop
-            ? wideStyles.dataZoomX
-            : narrowStyles.dataZoomX) as DataZoomComponentOption,
           {
+            id: "x_slider",
             type: "slider",
             show: true,
-            yAxisIndex: [0],
-            right: 15,
-            start: 0,
-            end: 35000,
+            xAxisIndex: [0],
+            start: xZoomStart,
+            end: xZoomEnd,
+            bottom: 100,
+            filterMode: "none",
             handleSize: 55,
             moveHandleSize: 13
           },
           {
+            id: "y_slider",
+            type: "slider",
+            show: true,
+            yAxisIndex: [0],
+            right: 15,
+            start: yZoomStart,
+            end: yZoomEnd,
+            handleSize: 55,
+            moveHandleSize: 13
+          },
+          {
+            id: "x_inside",
             type: "inside",
             xAxisIndex: [0],
-            start: 0,
-            end: 35,
+            start: xZoomStart,
+            end: xZoomEnd,
             filterMode: "none"
           },
           {
+            id: "y_inside",
             type: "inside",
             yAxisIndex: [0],
-            start: 0,
-            end: 35000,
+            start: yZoomStart,
+            end: yZoomEnd,
             zoomOnMouseWheel: "shift"
           }
         ]}
         onClick={handleChartClick as any}
+        onDataZoom={handleDataZoom as any}
+        onRestore={handleRestore as any}
       />
       {isDesktop && (
         <Dialog>

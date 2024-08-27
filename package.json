@@ -25,7 +25,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "echarts": "^5.5.1",
-    "echarts-jsx": "^1.2.1",
     "immer": "^10.1.1",
     "lucide-react": "^0.427.0",
     "mathjs": "^13.0.3",
