@@ -172,13 +172,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
                   type: "cross"
                 }
               }
-            : {
-              formatter: tooltipFormatter,
-              trigger: "item",
-              axisPointer: {
-                type: "cross"
-              }
-            }
+            : undefined
         }
         toolbox={{
           show: true,
