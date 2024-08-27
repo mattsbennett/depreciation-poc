@@ -2,7 +2,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['thumb.autotempest.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**.autotempest.com',
+                port: ''
+            }
+        ],
     },
 };
 
