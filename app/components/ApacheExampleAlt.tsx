@@ -110,9 +110,13 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
   };
 
   const handleChartClick = (params: any) => {
+    // @ts-ignore
     setXZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start);
+    // @ts-ignore
     setXZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end);
+    // @ts-ignore
     setYZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start);
+    // @ts-ignore
     setYZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end);
     triggerRef.current?.click();
     setDialogData(params.value as DataPoint);
@@ -277,10 +281,13 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
                   }
                 },
                 onclick: function (params: any) {
-                  console.log(echartsRef.current?.getEchartsInstance())
+                  // @ts-ignore
                   setXZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start);
+                  // @ts-ignore
                   setXZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end);
+                  // @ts-ignore
                   setYZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start);
+                  // @ts-ignore
                   setYZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end);
                   setWheelZoom(!wheelZoom);
                 }
