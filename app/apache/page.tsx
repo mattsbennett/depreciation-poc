@@ -27,6 +27,10 @@ const ApacheExample = dynamic(() => import("../components/ApacheExample"), {
   ssr: false
 });
 
+const ApacheExampleAlt = dynamic(() => import("../components/ApacheExampleAlt"), {
+  ssr: false
+});
+
 export default function ApacheEchartsPage() {
   const [datasets, setDatasets] = useState<ApacheData>(getApacheData());
   const form = useForm<z.infer<typeof chartFormSchema>>({
@@ -125,7 +129,7 @@ export default function ApacheEchartsPage() {
           </Form>
         </div>
         <div className={clsx(styles.chartWrap, styles.nivoChart)}>
-          <ApacheExample data={datasets} />
+          <ApacheExampleAlt data={datasets} />
         </div>
       </main>
     </>

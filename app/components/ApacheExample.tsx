@@ -44,7 +44,7 @@ import {
 import { Button } from "./Button";
 import styles from "./ApacheExample.module.css";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Lock } from "lucide-react";
 
 const images: { [key: string]: string } = {
   "2016":
@@ -64,10 +64,14 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   const initialZoomStart = 0;
   const initialXZoomEnd = 35;
   const initialYZoomEnd = 35000;
-  const [xZoomStart, setXZoomStart] = useState<DataZoomComponentOption["start"]>(initialZoomStart);
-  const [xZoomEnd, setXZoomEnd] = useState<DataZoomComponentOption["end"]>(initialXZoomEnd);
-  const [yZoomStart, setYZoomStart] = useState<DataZoomComponentOption["start"]>(initialZoomStart);
-  const [yZoomEnd, setYZoomEnd] = useState<DataZoomComponentOption["end"]>(initialYZoomEnd);
+  const [xZoomStart, setXZoomStart] =
+    useState<DataZoomComponentOption["start"]>(initialZoomStart);
+  const [xZoomEnd, setXZoomEnd] =
+    useState<DataZoomComponentOption["end"]>(initialXZoomEnd);
+  const [yZoomStart, setYZoomStart] =
+    useState<DataZoomComponentOption["start"]>(initialZoomStart);
+  const [yZoomEnd, setYZoomEnd] =
+    useState<DataZoomComponentOption["end"]>(initialYZoomEnd);
   const [dialogData, setDialogData] = useState<DataPoint | null>(null);
   const { resolvedTheme } = useTheme();
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -82,6 +86,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   };
 
   const handleChartClick = (params: any) => {
+    console.log(params);
     triggerRef.current?.click();
     setDialogData(params.value as DataPoint);
   };
@@ -96,14 +101,19 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
       setYZoomStart(dataZoom.start);
       setYZoomEnd(dataZoom.end);
     }
-  }
+  };
+
+  const onDataViewChanged = (params: any) => {
+    // Add the event listener after the chart is rendered
+    console.log(params)
+  };
 
   const handleRestore = () => {
     setXZoomStart(initialZoomStart);
     setXZoomEnd(initialXZoomEnd);
     setYZoomStart(initialZoomStart);
     setYZoomEnd(initialYZoomEnd);
-  }
+  };
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
@@ -180,7 +190,26 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
             dataZoom: {
               yAxisIndex: "none"
             },
-            restore: {}
+            restore: {},
+            myLock: {
+              show: true,
+              title: {
+                unlock: "Unlock",
+                lock: "Lock"
+              },
+              icon: "image://../lock.svg",
+              iconStyle: {
+                borderColor: resolvedTheme === "dark" ? "white" : "black",
+              },
+              emphasis: {
+                iconStyle: {
+                  borderColor: 'red'
+                }
+              },
+              onclick: function (params: any) {
+                console.log(params);
+              },
+            }
           }
         }}
         title={
@@ -234,6 +263,8 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
         onClick={handleChartClick as any}
         onDataZoom={handleDataZoom as any}
         onRestore={handleRestore as any}
+        // onMouseOver={onDataViewChanged as any}
+        // onDataViewChanged={onDataViewChanged as any}
       />
       {isDesktop && (
         <Dialog>
