@@ -27,9 +27,12 @@ const ApacheExample = dynamic(() => import("../components/ApacheExample"), {
   ssr: false
 });
 
-const ApacheExampleAlt = dynamic(() => import("../components/ApacheExampleAlt"), {
-  ssr: false
-});
+const ApacheExampleAlt = dynamic(
+  () => import("../components/ApacheExampleAlt"),
+  {
+    ssr: false
+  }
+);
 
 export default function ApacheEchartsPage() {
   const [datasets, setDatasets] = useState<ApacheData>(getApacheData());
@@ -52,15 +55,33 @@ export default function ApacheEchartsPage() {
         <h1>Apache ECharts Example</h1>
         <h2>Notes</h2>
         <ul>
-          <li>Design is simple/clean, with plenty of useful UX out of the box</li>
+          <li>
+            Design is simple/clean, with plenty of useful UX out of the box
+          </li>
           <li>Extensive customization options, including full theme system</li>
           <li>
             Interactions are highly customizable, and mobile optimized; best of
-            the options considered. For example, easy to zoom x-axis only by
-            default, but allow y-axis zooming with minimap and holding shift key
-            on desktop.
+            the options considered. Minimap/brush zoom seems the best UX for our
+            plans (content below chart), as it sidesteps the issue of
+            scrolling/panning being unintentionally captured by the chart (on
+            both mobile and desktop).
           </li>
-          <li>Typescript support is excellent: Not a single bug/ts-ignore required to build example. There are several react wrappers available; most are abandoned, though one is recent, and the author at least responded promptly when I opened an <a href="https://github.com/hugocxl/react-echarts/issues/45" target="_blank">issue</a>.</li>
+          <li>
+            Typescript support is excellent: Not a single bug/ts-ignore required
+            to build example. There are several react wrappers available; most
+            are abandoned, though one is recent, and the author at least
+            responded promptly when I opened a{" "}
+            <a href="https://github.com/hugocxl/react-echarts/issues/45">
+              couple
+            </a>{" "}
+            <a
+              href="https://github.com/hugocxl/react-echarts/issues/49"
+              target="_blank"
+            >
+              issues
+            </a>
+            .
+          </li>
         </ul>
         <h2>Chart Settings</h2>
         <div className={styles.formWrap}>
@@ -128,8 +149,8 @@ export default function ApacheEchartsPage() {
             </form>
           </Form>
         </div>
-        <div className={clsx(styles.chartWrap, styles.nivoChart)}>
-          <ApacheExampleAlt data={datasets} />
+        <div className={styles.chartWrap}>
+          <ApacheExample data={datasets} />
         </div>
       </main>
     </>

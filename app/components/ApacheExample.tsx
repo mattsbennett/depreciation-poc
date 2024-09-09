@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { EChart } from "@kbox-labs/react-echarts";
+import { debounce } from "remeda";
 import { DataZoomComponentOption, LegendComponentOption } from "echarts";
 import { useTheme } from "next-themes";
 import {
@@ -59,6 +60,15 @@ const images: { [key: string]: string } = {
     "https://thumb.autotempest.com/cm/WA1LXAF76LD005326_a99a8be0-6c1a-4c8d-a2fc-dcc2f2295ca5_df5ac22e87d6c1c33e5fd51b4d719f09_71489_854aab18a95b3d1756471638b5e0c2fd.webp"
 };
 
+const undoPath =
+  "M 4.00,9.00 C 4.00,9.00 14.50,9.00 14.50,9.00 17.54,9.00 20.00,11.46 20.00,14.50 20.00,17.54 17.54,20.00 14.50,20.00 14.50,20.00 11.00,20.00 11.00,20.00M 9.00,14.00 C 9.00,14.00 4.00,9.00 4.00,9.00 4.00,9.00 9.00,4.00 9.00,4.00";
+
+// This react wrapper (@kbox-labs/react-echarts) was chosen because:
+// - It is actively maintained (only react wrapper that is it seems) and well documented
+// - It has a better API (options separated into props instead of a single options prop)
+// - Render performance is better than the other options (no unnecessary re-renders click, zoom, etc.)
+// - It is the only one that officially supports the latest version of ECharts
+// - Typescript support is excellent: Not a single bug/ts-ignore required to build example (though underlying echarts types are not perfect)
 export default function ApacheExample({ data }: { data: ApacheData }) {
   const [mounted, setMounted] = useState(false);
   const initialZoomStart = 0;
@@ -82,31 +92,28 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
   });
 
   const tooltipFormatter = (params: any) => {
-    return `<div style="color: rgb(var(--foreground-rgb));"><h4 style="display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 0.5rem;"><span style="display: inline-block; background-color: ${params.color}; width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-right: 0.25rem;"></span>${params.seriesName} Audi Q7</h4><img style="height: 100px; width: auto;" src="${images[params.seriesName]}" /><div>${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(params.value.y)}</div><div>${params.value.x.toDateString()}</div></div>`;
+    return `<div style="color: rgb(var(--foreground-rgb))"><h4 style="display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 0.5rem;"><span style="display: inline-block; background-color: ${params.color}; width: 0.7rem; height: 0.7rem; border-radius: 50%; margin-right: 0.25rem;"></span>${params.seriesName} Audi Q7</h4><img style="height: 100px; width: auto;" src="${images[params.seriesName]}" /><div>${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(params.value.y)}</div><div>${params.value.x.toDateString()}</div></div>`;
   };
 
   const handleChartClick = (params: any) => {
-    console.log(params);
     triggerRef.current?.click();
     setDialogData(params.value as DataPoint);
   };
 
-  const handleDataZoom = (params: any) => {
-    const dataZoom = params.batch ? params.batch[0] : params;
+  const handleDataZoom = debounce(
+    (params: any) => {
+      const dataZoom = params.batch ? params.batch[0] : params;
 
-    if (dataZoom.dataZoomId.includes("x_")) {
-      setXZoomStart(dataZoom.start);
-      setXZoomEnd(dataZoom.end);
-    } else if (dataZoom.dataZoomId.includes("y_")) {
-      setYZoomStart(dataZoom.start);
-      setYZoomEnd(dataZoom.end);
-    }
-  };
-
-  const onDataViewChanged = (params: any) => {
-    // Add the event listener after the chart is rendered
-    console.log(params)
-  };
+      if (dataZoom.dataZoomId.includes("x_")) {
+        setXZoomStart(dataZoom.start);
+        setXZoomEnd(dataZoom.end);
+      } else if (dataZoom.dataZoomId.includes("y_")) {
+        setYZoomStart(dataZoom.start);
+        setYZoomEnd(dataZoom.end);
+      }
+    },
+    { timing: "trailing", waitMs: 100 }
+  );
 
   const handleRestore = () => {
     setXZoomStart(initialZoomStart);
@@ -154,7 +161,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           type: "value",
           scale: true,
           axisLabel: {
-            formatter: val => `$${val / 1000}K`
+            formatter: val => `$${Math.floor((val / 1000) * 10) / 10}K`
           }
         }}
         theme={resolvedTheme === "dark" ? darkTheme : "light"}
@@ -165,6 +172,7 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
           bottom: 170,
           left: 40,
           right: 75,
+          containLabel: true,
           width: "auto"
         }}
         legend={{
@@ -187,28 +195,9 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
         toolbox={{
           show: true,
           feature: {
-            dataZoom: {
-              yAxisIndex: "none"
-            },
-            restore: {},
-            myLock: {
-              show: true,
-              title: {
-                unlock: "Unlock",
-                lock: "Lock"
-              },
-              icon: "image://../lock.svg",
-              iconStyle: {
-                borderColor: resolvedTheme === "dark" ? "white" : "black",
-              },
-              emphasis: {
-                iconStyle: {
-                  borderColor: 'red'
-                }
-              },
-              onclick: function (params: any) {
-                console.log(params);
-              },
+            restore: {
+              title: "Reset Zoom",
+              icon: `path://${undoPath}`
             }
           }
         }}
@@ -228,9 +217,12 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
             start: xZoomStart,
             end: xZoomEnd,
             bottom: 100,
+            // Prevents aggregate series from disappearing when zoomed in (e.g.
+            // mean, std dev)
             filterMode: "none",
             handleSize: 55,
-            moveHandleSize: 13
+            moveHandleSize: 13,
+            brushSelect: isDesktop ? true : false
           },
           {
             id: "y_slider",
@@ -240,31 +232,17 @@ export default function ApacheExample({ data }: { data: ApacheData }) {
             right: 15,
             start: yZoomStart,
             end: yZoomEnd,
+            // Prevents aggregate series from disappearing when zoomed in (e.g.
+            // mean, std dev)
+            filterMode: "none",
             handleSize: 55,
-            moveHandleSize: 13
-          },
-          {
-            id: "x_inside",
-            type: "inside",
-            xAxisIndex: [0],
-            start: xZoomStart,
-            end: xZoomEnd,
-            filterMode: "none"
-          },
-          {
-            id: "y_inside",
-            type: "inside",
-            yAxisIndex: [0],
-            start: yZoomStart,
-            end: yZoomEnd,
-            zoomOnMouseWheel: "shift"
+            moveHandleSize: 13,
+            brushSelect: isDesktop ? true : false
           }
         ]}
         onClick={handleChartClick as any}
-        onDataZoom={handleDataZoom as any}
+        onDataZoom={handleDataZoom.call as any}
         onRestore={handleRestore as any}
-        // onMouseOver={onDataViewChanged as any}
-        // onDataViewChanged={onDataViewChanged as any}
       />
       {isDesktop && (
         <Dialog>

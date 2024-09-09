@@ -81,6 +81,9 @@ const touchPath = "M 18.00,11.00 C 18.00,9.90 18.90,9.00 20.00,9.00 21.10,9.00 2
 const touchOffPath = "M 2.00,2.00 C 2.00,2.00 22.00,22.00 22.00,22.00M 6.00,6.00 C 6.00,6.00 6.00,14.00 6.00,14.00M 7.00,15.00 C 7.00,15.00 5.20,13.20 5.20,13.20 4.85,12.89 4.38,12.70 3.87,12.70 2.77,12.70 1.87,13.59 1.87,14.70 1.87,15.22 2.08,15.70 2.41,16.06 2.41,16.06 6.00,19.70 6.00,19.70 7.40,21.13 9.36,22.01 11.52,22.01 11.68,22.01 11.84,22.01 12.00,22.00 12.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 16.21,22.00 18.21,21.10 19.66,19.66M 21.70,16.20 C 21.90,15.52 22.00,14.78 22.00,14.03 22.00,14.02 22.00,14.01 22.00,14.00 22.00,14.00 22.00,11.00 22.00,11.00 22.00,9.90 21.10,9.00 20.00,9.00 18.90,9.00 18.00,9.90 18.00,11.00 18.00,11.00 18.00,10.00 18.00,10.00 18.00,8.90 17.10,8.00 16.00,8.00 15.33,8.00 14.73,8.33 14.37,8.84M 13.90,8.40 C 13.71,7.79 13.24,7.31 12.64,7.10M 10.00,4.50 C 10.00,4.50 10.00,4.00 10.00,4.00 10.00,2.90 9.10,2.00 8.00,2.00 7.86,2.00 7.72,2.02 7.59,2.04"
 const undoPath = "M 4.00,9.00 C 4.00,9.00 14.50,9.00 14.50,9.00 17.54,9.00 20.00,11.46 20.00,14.50 20.00,17.54 17.54,20.00 14.50,20.00 14.50,20.00 11.00,20.00 11.00,20.00M 9.00,14.00 C 9.00,14.00 4.00,9.00 4.00,9.00 4.00,9.00 9.00,4.00 9.00,4.00"
 
+// This component uses the echarts-for-react library, which is abandoned, and
+// rejected for poor typescript support and rendering performance. It is
+// included here for comparison with the @kbox-labs/react-echarts library.
 export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
   const [mounted, setMounted] = useState(false);
   const [wheelZoom, setWheelZoom] = useState(false);
@@ -173,7 +176,7 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
             type: "value",
             scale: true,
             axisLabel: {
-              formatter: (val: number) => `$${val / 1000}K`
+              formatter: (val: number) => `$${Math.floor((val / 1000) * 10)/10}K`
             }
           },
           dataZoom: wheelZoom ? [
@@ -225,7 +228,9 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
               start: xZoomStart,
               end: xZoomEnd,
               bottom: 100,
-              filterMode: "none",
+              // This prevents aggregate series from disappearing when zoomed in
+              // but also reduces render performance for large datasets
+              // filterMode: "none",
               handleSize: 55,
               moveHandleSize: 13,
               brushSelect: isDesktop ? true : false
@@ -238,6 +243,9 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
               right: 15,
               start: yZoomStart,
               end: yZoomEnd,
+              // This prevents aggregate series from disappearing when zoomed in
+              // but also reduces render performance for large datasets
+              // filterMode: "none",
               handleSize: 55,
               moveHandleSize: 13,
               brushSelect: isDesktop ? true : false
@@ -248,6 +256,7 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
             bottom: 170,
             left: 40,
             right: 75,
+            containLabel: true,
             width: "auto"
           },
           legend: {
@@ -268,30 +277,31 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
           toolbox: {
             show: true,
             feature: {
-              myZoom: {
-                show: true,
-                title: isDesktop ? "Wheel Zoom" : "Pinch Zoom",
-                icon: isDesktop ? wheelZoom ? `path://${mousePath}` : `path://${mouseOffPath}` : wheelZoom ? `path://${touchOffPath}` : `path://${touchPath}`,
-                iconStyle: {
-                  borderColor: resolvedTheme === "dark" ? "#B9B8CE" : "black"
-                },
-                emphasis: {
-                  iconStyle: {
-                    borderColor: "rgb(59, 141, 186)"
-                  }
-                },
-                onclick: function (params: any) {
-                  // @ts-ignore
-                  setXZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start);
-                  // @ts-ignore
-                  setXZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end);
-                  // @ts-ignore
-                  setYZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start);
-                  // @ts-ignore
-                  setYZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end);
-                  setWheelZoom(!wheelZoom);
-                }
-              },
+              // Toggle for zooming with mouse or touch
+              // myZoom: {
+              //   show: true,
+              //   title: isDesktop ? "Wheel Zoom" : "Pinch Zoom",
+              //   icon: isDesktop ? wheelZoom ? `path://${mousePath}` : `path://${mouseOffPath}` : wheelZoom ? `path://${touchOffPath}` : `path://${touchPath}`,
+              //   iconStyle: {
+              //     borderColor: resolvedTheme === "dark" ? "#B9B8CE" : "black"
+              //   },
+              //   emphasis: {
+              //     iconStyle: {
+              //       borderColor: "rgb(59, 141, 186)"
+              //     }
+              //   },
+              //   onclick: function (params: any) {
+              //     // @ts-ignore
+              //     setXZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start);
+              //     // @ts-ignore
+              //     setXZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end);
+              //     // @ts-ignore
+              //     setYZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start);
+              //     // @ts-ignore
+              //     setYZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end);
+              //     setWheelZoom(!wheelZoom);
+              //   }
+              // },
               restore: {
                 title: "Reset Zoom",
                 icon: `path://${undoPath}`,
