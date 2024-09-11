@@ -118,20 +118,20 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
   };
 
   const handleChartClick = (params: any) => {
-    // @ts-ignore
     setXZoomStart(
+          // @ts-ignore
       echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start
     );
-    // @ts-ignore
     setXZoomEnd(
+          // @ts-ignore
       echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end
     );
-    // @ts-ignore
     setYZoomStart(
+          // @ts-ignore
       echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start
     );
-    // @ts-ignore
     setYZoomEnd(
+          // @ts-ignore
       echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end
     );
     triggerRef.current?.click();
