@@ -1,14 +1,15 @@
 .skeleton {
-    animation: pulse 2s infinite;
-    border-radius: 0.375rem;
-    background-color: var(--bg-muted);
-  }
+  animation: pulse 2s infinite;
+  border-radius: 0.375rem;
+  background-color: var(--bg-muted);
+}
 
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.5;
+  }
+}

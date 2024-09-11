@@ -44,7 +44,7 @@ export default function PlotlyPage() {
     <>
       <Header />
       <main className={styles.main}>
-        <h1>Plotly.js Example</h1>
+        <h1>Plotly.js Example (Rejected)</h1>
         <h2>Notes</h2>
         <ul>
           <li>
@@ -144,7 +144,9 @@ export default function PlotlyPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant='outline'>Apply</Button>
+              <Button type="submit" variant="outline">
+                Apply
+              </Button>
             </form>
           </Form>
         </div>

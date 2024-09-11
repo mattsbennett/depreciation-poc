@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
-import clsx from "clsx"
-import styles from "./Drawer.module.css"
+import * as React from "react";
+import { Drawer as DrawerPrimitive } from "vaul";
+import clsx from "clsx";
+import styles from "./Drawer.module.css";
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -13,14 +13,14 @@ const Drawer = ({
     shouldScaleBackground={shouldScaleBackground}
     {...props}
   />
-)
-Drawer.displayName = "Drawer"
+);
+Drawer.displayName = "Drawer";
 
-const DrawerTrigger = DrawerPrimitive.Trigger
+const DrawerTrigger = DrawerPrimitive.Trigger;
 
-const DrawerPortal = DrawerPrimitive.Portal
+const DrawerPortal = DrawerPrimitive.Portal;
 
-const DrawerClose = DrawerPrimitive.Close
+const DrawerClose = DrawerPrimitive.Close;
 
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
@@ -31,8 +31,8 @@ const DrawerOverlay = React.forwardRef<
     className={clsx(styles.overlay, className)}
     {...props}
   />
-))
-DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
+));
+DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
@@ -42,40 +42,31 @@ const DrawerContent = React.forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
-      className={clsx(
-        styles.content,
-        className
-      )}
+      className={clsx(styles.content, className)}
       {...props}
     >
       <div className={styles.indicator} />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
-))
-DrawerContent.displayName = "DrawerContent"
+));
+DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={clsx(styles.header, className)}
-    {...props}
-  />
-)
-DrawerHeader.displayName = "DrawerHeader"
+  <div className={clsx(styles.header, className)} {...props} />
+);
+DrawerHeader.displayName = "DrawerHeader";
 
 const DrawerFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={clsx(styles.footer, className)}
-    {...props}
-  />
-)
-DrawerFooter.displayName = "DrawerFooter"
+  <div className={clsx(styles.footer, className)} {...props} />
+);
+DrawerFooter.displayName = "DrawerFooter";
 
 const DrawerTitle = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Title>,
@@ -83,14 +74,11 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={clsx(
-      styles.title,
-      className
-    )}
+    className={clsx(styles.title, className)}
     {...props}
   />
-))
-DrawerTitle.displayName = DrawerPrimitive.Title.displayName
+));
+DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
 
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
@@ -101,8 +89,8 @@ const DrawerDescription = React.forwardRef<
     className={clsx(styles.description, className)}
     {...props}
   />
-))
-DrawerDescription.displayName = DrawerPrimitive.Description.displayName
+));
+DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
 export {
   Drawer,
@@ -114,5 +102,5 @@ export {
   DrawerHeader,
   DrawerFooter,
   DrawerTitle,
-  DrawerDescription,
-}
+  DrawerDescription
+};

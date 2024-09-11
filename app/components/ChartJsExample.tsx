@@ -4,10 +4,7 @@ import { useEffect, useRef, useState, MouseEvent } from "react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import "chartjs-adapter-date-fns";
 
-import {
-  Chart as ChartJS,
-  registerables
-} from "chart.js";
+import { Chart as ChartJS, registerables } from "chart.js";
 import { ChartJsDataset, DataPoint } from "../mockDataGenerator";
 import {
   Dialog,

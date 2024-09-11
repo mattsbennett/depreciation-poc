@@ -47,7 +47,7 @@ export default function VegaLitePage() {
     <>
       <Header />
       <main className={styles.main}>
-        <h1>Vega-Lite Example</h1>
+        <h1>Vega-Lite Example (Rejected)</h1>
         <h2>Notes</h2>
         <ul>
           <li>
@@ -144,7 +144,9 @@ export default function VegaLitePage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant='outline'>Apply</Button>
+              <Button type="submit" variant="outline">
+                Apply
+              </Button>
             </form>
           </Form>
         </div>

@@ -533,7 +533,7 @@ export function getApacheData(
     lineStyle: {
       opacity: 0
     },
-    stack: "x",
+    stack: "x"
   });
   datasets.set("upper", {
     dimensions: ["x", "y"],

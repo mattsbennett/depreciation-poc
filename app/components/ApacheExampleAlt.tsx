@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ReactEChartsCore from "echarts-for-react/lib/core";
-import ReactECharts from 'echarts-for-react';
+import ReactECharts from "echarts-for-react";
 import { DataZoomComponentOption, LegendComponentOption } from "echarts";
 import { useTheme } from "next-themes";
 import {
@@ -75,11 +75,16 @@ const images: { [key: string]: string } = {
     "https://thumb.autotempest.com/cm/WA1LXAF76LD005326_a99a8be0-6c1a-4c8d-a2fc-dcc2f2295ca5_df5ac22e87d6c1c33e5fd51b4d719f09_71489_854aab18a95b3d1756471638b5e0c2fd.webp"
 };
 
-const mousePath = "M 12.00,6.00 C 12.00,6.00 12.00,10.00 12.00,10.00M 12.00,2.00 C 15.87,2.00 19.00,5.13 19.00,9.00 19.00,9.00 19.00,15.00 19.00,15.00 19.00,18.87 15.87,22.00 12.00,22.00 12.00,22.00 12.00,22.00 12.00,22.00 8.13,22.00 5.00,18.87 5.00,15.00 5.00,15.00 5.00,9.00 5.00,9.00 5.00,5.13 8.13,2.00 12.00,2.00 12.00,2.00 12.00,2.00 12.00,2.00 Z";
-const mouseOffPath = "M 22.00,22.00 C 22.00,22.00 2.00,2.00 2.00,2.00M 19.00,13.34 C 19.00,13.34 19.00,9.00 19.00,9.00 19.00,9.00 19.00,9.00 19.00,9.00 19.00,5.13 15.87,2.00 12.00,2.00 10.75,2.00 9.58,2.33 8.56,2.90M 18.22,18.22 C 17.05,20.47 14.71,22.00 12.00,22.00 8.13,22.00 5.00,18.87 5.00,15.00 5.00,15.00 5.00,15.00 5.00,15.00 5.00,15.00 5.00,9.00 5.00,9.00 5.00,9.00 5.00,9.00 5.00,9.00 5.00,7.84 5.28,6.74 5.78,5.78M 12.00,6.00 C 12.00,6.00 12.00,6.34 12.00,6.34"
-const touchPath = "M 18.00,11.00 C 18.00,9.90 18.90,9.00 20.00,9.00 21.10,9.00 22.00,9.90 22.00,11.00 22.00,11.00 22.00,14.00 22.00,14.00 22.00,18.42 18.42,22.00 14.00,22.00 14.00,22.00 12.00,22.00 12.00,22.00 9.20,22.00 7.50,21.14 6.01,19.66 6.01,19.66 2.41,16.06 2.41,16.06 2.09,15.71 1.89,15.24 1.89,14.72 1.89,13.62 2.79,12.72 3.89,12.72 4.41,12.72 4.88,12.92 5.24,13.24 5.24,13.24 7.00,15.00 7.00,15.00M 10.00,9.50 C 10.00,9.50 10.00,4.00 10.00,4.00 10.00,2.90 9.10,2.00 8.00,2.00 6.90,2.00 6.00,2.90 6.00,4.00 6.00,4.00 6.00,14.00 6.00,14.00M 14.00,10.00 C 14.00,10.00 14.00,9.00 14.00,9.00 14.00,7.90 13.10,7.00 12.00,7.00 10.90,7.00 10.00,7.90 10.00,9.00 10.00,9.00 10.00,10.00 10.00,10.00M 18.00,11.00 C 18.00,11.00 18.00,10.00 18.00,10.00 18.00,8.90 17.10,8.00 16.00,8.00 14.90,8.00 14.00,8.90 14.00,10.00M 22.00,14.00 C 22.00,18.42 18.42,22.00 14.00,22.00"
-const touchOffPath = "M 2.00,2.00 C 2.00,2.00 22.00,22.00 22.00,22.00M 6.00,6.00 C 6.00,6.00 6.00,14.00 6.00,14.00M 7.00,15.00 C 7.00,15.00 5.20,13.20 5.20,13.20 4.85,12.89 4.38,12.70 3.87,12.70 2.77,12.70 1.87,13.59 1.87,14.70 1.87,15.22 2.08,15.70 2.41,16.06 2.41,16.06 6.00,19.70 6.00,19.70 7.40,21.13 9.36,22.01 11.52,22.01 11.68,22.01 11.84,22.01 12.00,22.00 12.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 16.21,22.00 18.21,21.10 19.66,19.66M 21.70,16.20 C 21.90,15.52 22.00,14.78 22.00,14.03 22.00,14.02 22.00,14.01 22.00,14.00 22.00,14.00 22.00,11.00 22.00,11.00 22.00,9.90 21.10,9.00 20.00,9.00 18.90,9.00 18.00,9.90 18.00,11.00 18.00,11.00 18.00,10.00 18.00,10.00 18.00,8.90 17.10,8.00 16.00,8.00 15.33,8.00 14.73,8.33 14.37,8.84M 13.90,8.40 C 13.71,7.79 13.24,7.31 12.64,7.10M 10.00,4.50 C 10.00,4.50 10.00,4.00 10.00,4.00 10.00,2.90 9.10,2.00 8.00,2.00 7.86,2.00 7.72,2.02 7.59,2.04"
-const undoPath = "M 4.00,9.00 C 4.00,9.00 14.50,9.00 14.50,9.00 17.54,9.00 20.00,11.46 20.00,14.50 20.00,17.54 17.54,20.00 14.50,20.00 14.50,20.00 11.00,20.00 11.00,20.00M 9.00,14.00 C 9.00,14.00 4.00,9.00 4.00,9.00 4.00,9.00 9.00,4.00 9.00,4.00"
+const mousePath =
+  "M 12.00,6.00 C 12.00,6.00 12.00,10.00 12.00,10.00M 12.00,2.00 C 15.87,2.00 19.00,5.13 19.00,9.00 19.00,9.00 19.00,15.00 19.00,15.00 19.00,18.87 15.87,22.00 12.00,22.00 12.00,22.00 12.00,22.00 12.00,22.00 8.13,22.00 5.00,18.87 5.00,15.00 5.00,15.00 5.00,9.00 5.00,9.00 5.00,5.13 8.13,2.00 12.00,2.00 12.00,2.00 12.00,2.00 12.00,2.00 Z";
+const mouseOffPath =
+  "M 22.00,22.00 C 22.00,22.00 2.00,2.00 2.00,2.00M 19.00,13.34 C 19.00,13.34 19.00,9.00 19.00,9.00 19.00,9.00 19.00,9.00 19.00,9.00 19.00,5.13 15.87,2.00 12.00,2.00 10.75,2.00 9.58,2.33 8.56,2.90M 18.22,18.22 C 17.05,20.47 14.71,22.00 12.00,22.00 8.13,22.00 5.00,18.87 5.00,15.00 5.00,15.00 5.00,15.00 5.00,15.00 5.00,15.00 5.00,9.00 5.00,9.00 5.00,9.00 5.00,9.00 5.00,9.00 5.00,7.84 5.28,6.74 5.78,5.78M 12.00,6.00 C 12.00,6.00 12.00,6.34 12.00,6.34";
+const touchPath =
+  "M 18.00,11.00 C 18.00,9.90 18.90,9.00 20.00,9.00 21.10,9.00 22.00,9.90 22.00,11.00 22.00,11.00 22.00,14.00 22.00,14.00 22.00,18.42 18.42,22.00 14.00,22.00 14.00,22.00 12.00,22.00 12.00,22.00 9.20,22.00 7.50,21.14 6.01,19.66 6.01,19.66 2.41,16.06 2.41,16.06 2.09,15.71 1.89,15.24 1.89,14.72 1.89,13.62 2.79,12.72 3.89,12.72 4.41,12.72 4.88,12.92 5.24,13.24 5.24,13.24 7.00,15.00 7.00,15.00M 10.00,9.50 C 10.00,9.50 10.00,4.00 10.00,4.00 10.00,2.90 9.10,2.00 8.00,2.00 6.90,2.00 6.00,2.90 6.00,4.00 6.00,4.00 6.00,14.00 6.00,14.00M 14.00,10.00 C 14.00,10.00 14.00,9.00 14.00,9.00 14.00,7.90 13.10,7.00 12.00,7.00 10.90,7.00 10.00,7.90 10.00,9.00 10.00,9.00 10.00,10.00 10.00,10.00M 18.00,11.00 C 18.00,11.00 18.00,10.00 18.00,10.00 18.00,8.90 17.10,8.00 16.00,8.00 14.90,8.00 14.00,8.90 14.00,10.00M 22.00,14.00 C 22.00,18.42 18.42,22.00 14.00,22.00";
+const touchOffPath =
+  "M 2.00,2.00 C 2.00,2.00 22.00,22.00 22.00,22.00M 6.00,6.00 C 6.00,6.00 6.00,14.00 6.00,14.00M 7.00,15.00 C 7.00,15.00 5.20,13.20 5.20,13.20 4.85,12.89 4.38,12.70 3.87,12.70 2.77,12.70 1.87,13.59 1.87,14.70 1.87,15.22 2.08,15.70 2.41,16.06 2.41,16.06 6.00,19.70 6.00,19.70 7.40,21.13 9.36,22.01 11.52,22.01 11.68,22.01 11.84,22.01 12.00,22.00 12.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 14.00,22.00 16.21,22.00 18.21,21.10 19.66,19.66M 21.70,16.20 C 21.90,15.52 22.00,14.78 22.00,14.03 22.00,14.02 22.00,14.01 22.00,14.00 22.00,14.00 22.00,11.00 22.00,11.00 22.00,9.90 21.10,9.00 20.00,9.00 18.90,9.00 18.00,9.90 18.00,11.00 18.00,11.00 18.00,10.00 18.00,10.00 18.00,8.90 17.10,8.00 16.00,8.00 15.33,8.00 14.73,8.33 14.37,8.84M 13.90,8.40 C 13.71,7.79 13.24,7.31 12.64,7.10M 10.00,4.50 C 10.00,4.50 10.00,4.00 10.00,4.00 10.00,2.90 9.10,2.00 8.00,2.00 7.86,2.00 7.72,2.02 7.59,2.04";
+const undoPath =
+  "M 4.00,9.00 C 4.00,9.00 14.50,9.00 14.50,9.00 17.54,9.00 20.00,11.46 20.00,14.50 20.00,17.54 17.54,20.00 14.50,20.00 14.50,20.00 11.00,20.00 11.00,20.00M 9.00,14.00 C 9.00,14.00 4.00,9.00 4.00,9.00 4.00,9.00 9.00,4.00 9.00,4.00";
 
 // This component uses the echarts-for-react library, which is abandoned, and
 // rejected for poor typescript support and rendering performance. It is
@@ -114,13 +119,21 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
 
   const handleChartClick = (params: any) => {
     // @ts-ignore
-    setXZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start);
+    setXZoomStart(
+      echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].start
+    );
     // @ts-ignore
-    setXZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end);
+    setXZoomEnd(
+      echartsRef.current?.getEchartsInstance().getOption().dataZoom[0].end
+    );
     // @ts-ignore
-    setYZoomStart(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start);
+    setYZoomStart(
+      echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].start
+    );
     // @ts-ignore
-    setYZoomEnd(echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end);
+    setYZoomEnd(
+      echartsRef.current?.getEchartsInstance().getOption().dataZoom[1].end
+    );
     triggerRef.current?.click();
     setDialogData(params.value as DataPoint);
   };
@@ -136,7 +149,7 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
     if (echartsRef.current) {
       console.log(echartsRef.current.getEchartsInstance());
     }
-  }
+  };
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
@@ -176,81 +189,84 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
             type: "value",
             scale: true,
             axisLabel: {
-              formatter: (val: number) => `$${Math.floor((val / 1000) * 10)/10}K`
+              formatter: (val: number) =>
+                `$${Math.floor((val / 1000) * 10) / 10}K`
             }
           },
-          dataZoom: wheelZoom ? [
-            {
-              id: "x_slider",
-              type: "slider",
-              show: true,
-              xAxisIndex: [0],
-              start: xZoomStart,
-              end: xZoomEnd,
-              bottom: 100,
-              filterMode: "none",
-              handleSize: 55,
-              moveHandleSize: 13
-            },
-            {
-              id: "y_slider",
-              type: "slider",
-              show: true,
-              yAxisIndex: [0],
-              right: 15,
-              start: yZoomStart,
-              end: yZoomEnd,
-              handleSize: 55,
-              moveHandleSize: 13
-            },
-            {
-              id: "x_inside",
-              type: "inside",
-              xAxisIndex: [0],
-              start: xZoomStart,
-              end: xZoomEnd,
-              filterMode: "none"
-            },
-            {
-              id: "y_inside",
-              type: "inside",
-              yAxisIndex: [0],
-              start: yZoomStart,
-              end: yZoomEnd,
-              zoomOnMouseWheel: "shift"
-            }
-          ] : [
-            {
-              id: "x_slider",
-              type: "slider",
-              show: true,
-              xAxisIndex: [0],
-              start: xZoomStart,
-              end: xZoomEnd,
-              bottom: 100,
-              // This prevents aggregate series from disappearing when zoomed in
-              // but also reduces render performance for large datasets
-              // filterMode: "none",
-              handleSize: 55,
-              moveHandleSize: 13,
-              brushSelect: isDesktop ? true : false
-            },
-            {
-              id: "y_slider",
-              type: "slider",
-              show: true,
-              yAxisIndex: [0],
-              right: 15,
-              start: yZoomStart,
-              end: yZoomEnd,
-              // This prevents aggregate series from disappearing when zoomed in
-              // but also reduces render performance for large datasets
-              // filterMode: "none",
-              handleSize: 55,
-              moveHandleSize: 13,
-              brushSelect: isDesktop ? true : false
-            }
-          ],
+          dataZoom: wheelZoom
+            ? [
+                {
+                  id: "x_slider",
+                  type: "slider",
+                  show: true,
+                  xAxisIndex: [0],
+                  start: xZoomStart,
+                  end: xZoomEnd,
+                  bottom: 100,
+                  filterMode: "none",
+                  handleSize: 55,
+                  moveHandleSize: 13
+                },
+                {
+                  id: "y_slider",
+                  type: "slider",
+                  show: true,
+                  yAxisIndex: [0],
+                  right: 15,
+                  start: yZoomStart,
+                  end: yZoomEnd,
+                  handleSize: 55,
+                  moveHandleSize: 13
+                },
+                {
+                  id: "x_inside",
+                  type: "inside",
+                  xAxisIndex: [0],
+                  start: xZoomStart,
+                  end: xZoomEnd,
+                  filterMode: "none"
+                },
+                {
+                  id: "y_inside",
+                  type: "inside",
+                  yAxisIndex: [0],
+                  start: yZoomStart,
+                  end: yZoomEnd,
+                  zoomOnMouseWheel: "shift"
+                }
+              ]
+            : [
+                {
+                  id: "x_slider",
+                  type: "slider",
+                  show: true,
+                  xAxisIndex: [0],
+                  start: xZoomStart,
+                  end: xZoomEnd,
+                  bottom: 100,
+                  // This prevents aggregate series from disappearing when zoomed in
+                  // but also reduces render performance for large datasets
+                  // filterMode: "none",
+                  handleSize: 55,
+                  moveHandleSize: 13,
+                  brushSelect: isDesktop ? true : false
+                },
+                {
+                  id: "y_slider",
+                  type: "slider",
+                  show: true,
+                  yAxisIndex: [0],
+                  right: 15,
+                  start: yZoomStart,
+                  end: yZoomEnd,
+                  // This prevents aggregate series from disappearing when zoomed in
+                  // but also reduces render performance for large datasets
+                  // filterMode: "none",
+                  handleSize: 55,
+                  moveHandleSize: 13,
+                  brushSelect: isDesktop ? true : false
+                }
+              ],
           grid: {
             top: 50,
             bottom: 170,
@@ -304,8 +320,8 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
               // },
               restore: {
                 title: "Reset Zoom",
-                icon: `path://${undoPath}`,
-              },
+                icon: `path://${undoPath}`
+              }
             }
           }
         }}
@@ -315,7 +331,7 @@ export default function ApacheExampleAlt({ data }: { data: ApacheData }) {
         onChartReady={handleChartReady}
         onEvents={{
           click: handleChartClick,
-          restore: handleRestore,
+          restore: handleRestore
         }}
       />
       {isDesktop && (

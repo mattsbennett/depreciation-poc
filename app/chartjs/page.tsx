@@ -44,7 +44,7 @@ export default function ChartJsPage() {
     <>
       <Header />
       <main className={styles.main}>
-        <h1>Chart.js Example</h1>
+        <h1>Chart.js Example (Rejected)</h1>
         <h2>Notes</h2>
         <ul>
           <li>Design is simple/clean</li>

@@ -11,7 +11,8 @@ import {
 } from "../components/Tooltip";
 import styles from "./Slider.module.css";
 
-interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
+interface SliderProps
+  extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
   showTooltip?: boolean;
 }
 
@@ -39,10 +40,7 @@ const Slider = React.forwardRef<HTMLElement, SliderProps>(
     return (
       <SliderPrimitive.Root
         ref={ref}
-        className={clsx(
-          styles.slider,
-          className
-        )}
+        className={clsx(styles.slider, className)}
         onValueChange={setValue}
         onPointerDown={handlePointerDown}
         {...props}

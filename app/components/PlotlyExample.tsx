@@ -38,7 +38,7 @@ export default function PlotlyExample({
   datasets: PlotlyDataset[];
 }) {
   const [dialogData, setDialogData] = useState<DataPoint | null>(null);
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const triggerRef = useRef<HTMLDivElement>(null);
   const layout = {
     margin: {
@@ -81,15 +81,15 @@ export default function PlotlyExample({
   };
   return (
     <>
-    <Plot
-      // @ts-ignore
-      config={config}
-      data={datasets}
-      layout={layout}
-      style={{ width: "100%", height: "800px" }}
-      onClick={handleChartClick}
-    />
-          {isDesktop && (
+      <Plot
+        // @ts-ignore
+        config={config}
+        data={datasets}
+        layout={layout}
+        style={{ width: "100%", height: "800px" }}
+        onClick={handleChartClick}
+      />
+      {isDesktop && (
         <Dialog>
           <DialogTrigger style={{ display: "none" }}>
             <div style={{ display: "none" }} ref={triggerRef} />

@@ -23,6 +23,10 @@ export default function Home() {
             </Link>
           </Card>
         </li>
+      </ul>
+
+      <h2>Rejected</h2>
+      <ul>
         <li>
           <Card>
             <Link href="/chartjs">
@@ -39,10 +43,6 @@ export default function Home() {
             </Link>
           </Card>
         </li>
-      </ul>
-
-      <h2>Rejected</h2>
-      <ul>
         <li>
           <Card>
             <Link href="/vegalite">

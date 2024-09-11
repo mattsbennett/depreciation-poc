@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { createClassFromSpec } from "react-vega";
 
@@ -6,7 +6,7 @@ export default createClassFromSpec({
   mode: "vega-lite",
   spec: {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-    "background": "transparent",
+    background: "transparent",
     title: "Audi Q7 Prices",
     config: { customFormatTypes: true, scale: { round: false } },
     description:
@@ -5065,7 +5065,7 @@ export default createClassFromSpec({
             title: "Model Year"
           },
           opacity: {
-            condition: {param: "modelYear", value: 1},
+            condition: { param: "modelYear", value: 1 },
             value: 0.2
           }
         },
@@ -5077,7 +5077,7 @@ export default createClassFromSpec({
           },
           {
             name: "modelYear",
-            select: {"type": "point", "fields": ["modelYear"]},
+            select: { type: "point", fields: ["modelYear"] },
             bind: "legend"
           }
         ]
@@ -5106,29 +5106,29 @@ export default createClassFromSpec({
             type: "quantitative"
           },
           color: {
-            datum: "Polynomial Regression",
+            datum: "Polynomial Regression"
           }
         }
       },
-    //   {
-    //     mark: {
-    //       type: "line",
-    //       interpolate: "natural"
-    //     },
-    //     encoding: {
-    //       x: {
-    //         field: "date",
-    //         type: "temporal",
-    //         axis: { title: "Date" }
-    //       },
-    //       y: {
-    //         field: "Mean Price (+- stddev)",
-    //         type: "quantitative",
-    //         scale: { domain: [10000, 26000] },
-    //         axis: { title: "Mean Price (+- stddev)" }
-    //       }
-    //     }
-    //   },
+      //   {
+      //     mark: {
+      //       type: "line",
+      //       interpolate: "natural"
+      //     },
+      //     encoding: {
+      //       x: {
+      //         field: "date",
+      //         type: "temporal",
+      //         axis: { title: "Date" }
+      //       },
+      //       y: {
+      //         field: "Mean Price (+- stddev)",
+      //         type: "quantitative",
+      //         scale: { domain: [10000, 26000] },
+      //         axis: { title: "Mean Price (+- stddev)" }
+      //       }
+      //     }
+      //   },
       {
         mark: { type: "errorband", extent: "stdev", opacity: 0.4 },
         encoding: {
@@ -5139,7 +5139,7 @@ export default createClassFromSpec({
           },
           tooltip: null,
           color: {
-            datum: "Mean Price (+- stddev)",
+            datum: "Mean Price (+- stddev)"
           }
         }
       },
@@ -5155,7 +5155,7 @@ export default createClassFromSpec({
             aggregate: "mean"
           },
           color: {
-            datum: "Mean Price (+- stddev)",
+            datum: "Mean Price (+- stddev)"
           }
         }
       }

@@ -1,28 +1,28 @@
 .dialogSpan {
-    display: block;
-    padding: 0.25rem 0;
+  display: block;
+  padding: 0.25rem 0;
 }
 
 .dialogDescription {
-    margin-top: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 .drawerDescription {
-    margin: 0 1rem;
+  margin: 0 1rem;
 }
 
 .drawerSpan {
-    display: block;
-    padding: 0.5rem 0;
+  display: block;
+  padding: 0.5rem 0;
 }
 
 .dialogDescription img,
 .drawerDescription img {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .chartWrap {
-    position: relative;
+  position: relative;
 }
 
 /* .chartWrap::after {
